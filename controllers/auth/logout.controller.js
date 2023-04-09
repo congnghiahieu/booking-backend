@@ -1,4 +1,4 @@
-const userModel = require("../model/User");
+const UserModel = require('../../model/User');
 
 const logout = async (req, res) => {
   // On Client also delete accessToken, accessToken = null;
@@ -6,32 +6,29 @@ const logout = async (req, res) => {
   if (!cookies?.jwt) return res.sendStatus(204);
   const refreshToken = cookies.jwt;
   // Check is refreshToken in DB
-  const foundUser = await userModel.findOne({ refreshToken }).exec();
+  const foundUser = await UserModel.findOne({ refreshToken }).exec();
 
   if (!foundUser) {
-    console.log("Logout: Not found user");
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "None", secure: true });
-    res.clearCookie("jwt", {
+    console.log('Logout: Not found user');
+    res.clearCookie('jwt', {
       httpOnly: true,
-      sameSite: "None",
-      secure: true,
+      // sameSite: 'None',
+      // secure: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
     return res.sendStatus(204);
   }
 
-  console.log("Logout: clear JWT");
+  console.log('Logout: clear JWT');
   // Xoá refreshToken trong DB
-  foundUser.refreshToken = foundUser.refreshToken.filter(
-    rt => rt !== refreshToken,
-  );
+  foundUser.refreshToken = foundUser.refreshToken.filter(rt => rt !== refreshToken);
   const result = await foundUser.save();
   console.log(result);
   // Clear cookie ở client
-  res.clearCookie("jwt", {
+  res.clearCookie('jwt', {
     httpOnly: true,
-    sameSite: "None",
-    secure: true,
+    // sameSite: 'None',
+    // secure: true,
     maxAge: 24 * 60 * 60 * 1000,
   });
   res.sendStatus(204);

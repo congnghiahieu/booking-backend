@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt");
-const userModel = require("../model/User");
+const bcrypt = require('bcrypt');
+const UserModel = require('../../model/User');
 
 const registerNewUser = async (req, res) => {
   // Check if lack of info
@@ -10,7 +10,7 @@ const registerNewUser = async (req, res) => {
     });
   }
   // Check if user already exists
-  const duplicate = await userModel.findOne({ username: newUserName }).exec();
+  const duplicate = await UserModel.findOne({ username: newUserName }).exec();
   if (duplicate) {
     return res.status(409).json({
       message: `Account is already exists`,
@@ -21,7 +21,7 @@ const registerNewUser = async (req, res) => {
     // Trong User Schema thuộc tính roles: {User: 1000} đã được đặt default nên không cần thêm ở bước tạo newUser nữa
     const hashedPwd = await bcrypt.hash(pwd, 10);
     // Tạo user mới lưu vào database
-    const newUser = await userModel.create({
+    const newUser = await UserModel.create({
       username: newUserName,
       password: hashedPwd,
     });
@@ -36,4 +36,4 @@ const registerNewUser = async (req, res) => {
   }
 };
 
-module.exports = { registerNewUser };
+module.exports = registerNewUser;

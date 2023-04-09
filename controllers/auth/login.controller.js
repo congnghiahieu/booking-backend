@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userModel = require('../model/User');
+const UserModel = require('../../model/User');
 
 const login = async (req, res) => {
   // Check if lack of info
@@ -11,7 +11,7 @@ const login = async (req, res) => {
     });
   }
   // Check if user not exists
-  const foundUser = await userModel.findOne({ username: userLoginName }).exec();
+  const foundUser = await UserModel.findOne({ username: userLoginName }).exec();
   if (!foundUser) {
     return res.status(401).json({
       message: `User ${userLoginName} not exist`,
@@ -50,7 +50,7 @@ const login = async (req, res) => {
       console.log(`cookie available at login: ${JSON.stringify(cookies)}`);
       let otherRetos = !cookies?.jwt
         ? foundUser.refreshToken
-        : foundUser.refreshToken.filter((rt) => rt !== cookies.jwt);
+        : foundUser.refreshToken.filter(rt => rt !== cookies.jwt);
       // Clear old cookies
       if (cookies?.jwt) {
         /*
@@ -61,7 +61,7 @@ const login = async (req, res) => {
         */
         // Detected refresh token reuse
         const oldReTo = cookies.jwt;
-        const user = await userModel.findOne({ refreshToken: oldReTo }).exec();
+        const user = await UserModel.findOne({ refreshToken: oldReTo }).exec();
         // Không tìm thấy user tương ứng với oldReto bởi vì ReTo đã được sử dụng bởi hacker
         if (!user) {
           console.log('Attemped to refresh token reuse at login');
@@ -70,8 +70,8 @@ const login = async (req, res) => {
         }
         res.clearCookie('jwt', {
           httpOnly: true,
-          sameSite: 'None',
-          secure: true,
+          // sameSite: 'None',
+          // secure: true,
           maxAge: 24 * 60 * 60 * 1000,
         });
       }
@@ -83,17 +83,18 @@ const login = async (req, res) => {
       // Save refresh token in file (in database)
       res.cookie('jwt', newRefreshToken, {
         httpOnly: true,
-        sameSite: 'None',
-        secure: true,
+        // sameSite: 'None',
+        // secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       });
+
       res.status(200).json({
         accessToken: newAccessToken,
         message: `User ${userLoginName} login successfully!`,
       });
     } else {
       res.status(401).json({
-        message: `Unauthenticated`,
+        message: `Wrong password`,
       });
     }
   } catch (err) {

@@ -2,31 +2,33 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema(
-  {
-    owner: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+    {
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+        },
+        hotelId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Hotel',
+            required: true,
+        },
+        title: {
+            type: String,
+            trim: true,
+            required: true,
+        },
+        content: {
+            type: String,
+            trim: true,
+            required: true,
+        },
     },
-    hotelId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Hotel',
+    {
+        timestamps: true,
     },
-    title: {
-      type: String,
-      trim: true,
-    },
-    content: {
-      type: String,
-      trim: true,
-    },
-    createdTime: {
-      type: Date,
-      default: () => Date.now(),
-    },
-  },
-  {
-    timestamps: true,
-  },
 );
 
-module.exports = mongoose.model('Comment', CommentSchema);
+const CommentModel = mongoose.model('Comment', CommentSchema);
+
+module.exports = CommentModel;

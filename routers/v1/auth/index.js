@@ -1,24 +1,21 @@
 const router = require('express').Router();
-const loginController = require('../../../controllers/auth/login.controller');
-const logoutController = require('../../../controllers/auth/logout.controller');
-const refreshController = require('../../../controllers/auth/refresh.cotroller');
-const registerController = require('../../../controllers/auth/register.controller');
+const authController = require('../../../controllers/auth');
 
 /*
-  POST http://localhost:8000/v1/auth/login
+  POST /v1/auth/register
 */
-router.post('/login', loginController);
+router.post('/register', authController.register);
 /*
-  GET http://localhost:8000/v1/auth/logout
+  POST /v1/auth/login
 */
-router.get('/logout', logoutController);
+router.post('/login', authController.login);
 /*
-  GET http://localhost:8000/v1/auth/refresh
+  GET /v1/auth/logout
 */
-router.get('/refresh', refreshController);
+router.get('/logout', authController.logout);
 /*
-  POST http://localhost:8000/v1/auth/register
+  GET /v1/auth/refresh
 */
-router.post('/register', registerController);
+router.get('/refresh', authController.refresh);
 
 module.exports = router;

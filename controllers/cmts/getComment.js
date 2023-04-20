@@ -2,6 +2,7 @@ const UserModel = require('../../model/User');
 const HotelModel = require('../../model/Hotel');
 const CommentModel = require('../../model/Comment');
 const checkValidMongoId = require('../../utils/checkValidMongoId');
+const pagingFind = require('../../utils/pagingFind');
 
 /*
   GET /v1/cmts?user_id
@@ -11,7 +12,7 @@ const checkValidMongoId = require('../../utils/checkValidMongoId');
 */
 
 const getComments = async (req, res) => {
-    const { user_id: userId, hotel_id: hotelId } = req.query;
+    const { user_id: userId, hotel_id: hotelId, page, per_page } = req.query;
 
     // Check only accept one params
     let paramsCount = 0;
@@ -58,9 +59,10 @@ const getComments = async (req, res) => {
             });
         }
 
-        const cmtList = await CommentModel.find(curFindField).lean().exec();
+        // const cmtList = await CommentModel.find(curFindField).lean().exec();
+        const cmtList = await pagingFind(page, per_page, CommentModel, curFindField);
 
-        console.log(cmtList);
+        // console.log(cmtList);
         return res.status(200).json(cmtList);
     } catch (err) {
         console.log(err);

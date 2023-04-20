@@ -30,10 +30,10 @@ const updateUserInfoById = async (req, res) => {
 
         // Update new information
         if (name) user.name = name;
-        if (phone) user.contact.phone = phone;
-        if (email) user.contact.email = email;
         if (nation) user.address.nation = nation;
         if (others) user.address.others = others;
+        if (phone) user.contact.phone = phone;
+        if (email) user.contact.email = email;
         if (Array.isArray(roles) && roles.length && roles.every(role => rolesList.includes(role))) {
             user.roles = roles;
         }

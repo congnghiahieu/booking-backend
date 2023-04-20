@@ -1,23 +1,12 @@
 const HotelModel = require('../../model/Hotel');
+const path = require('path');
 
 /*
   POST /v1/hotels
 */
 
 const createHotel = async (req, res) => {
-    const {
-        name,
-        title,
-        phone,
-        email,
-        desc,
-        thumbnails,
-        nation,
-        city,
-        province,
-        others,
-        stars = 4,
-    } = req.body;
+    const { name, title, phone, email, desc, nation, city, province, others, stars = 4 } = req.body;
 
     // Check for data fullfil
     if (!name || !title || !phone || !email || !desc || !nation || !city) {
@@ -26,13 +15,7 @@ const createHotel = async (req, res) => {
                 'Bad request. Need full information includes: name, title, phone, email, desc, nation, city',
         });
     }
-
-    // Check for hotel thumbnails
-    if (!Array.isArray(thumbnails) || !thumbnails?.length) {
-        return res.status(400).json({
-            message: 'Bad request. Need thumnail images as a non-empty array',
-        });
-    }
+    // imgs already checked at previous middlewares
 
     try {
         // Check for duplicate hotel
@@ -42,8 +25,8 @@ const createHotel = async (req, res) => {
             return res.status(409).json({ message: 'Conflict. Duplicate hotel name or title' });
         }
 
-        // Create hotel
-        const newHotel = await HotelModel.create({
+        // Create new hotel
+        const newHotel = new HotelModel({
             name,
             title,
             contact: {
@@ -51,7 +34,6 @@ const createHotel = async (req, res) => {
                 email,
             },
             desc,
-            thumbnails,
             location: {
                 nation,
                 city,
@@ -61,7 +43,35 @@ const createHotel = async (req, res) => {
             stars,
         });
 
-        console.log(newHotel);
+        const files = req.files;
+        let imgsPath = [];
+        // Save img
+        Object.keys(files).forEach(key => {
+            const absPath = path.join(
+                __dirname,
+                '../',
+                '../',
+                'public',
+                'imgs',
+                `hotels`,
+                `${newHotel.id}`,
+                files[key].name,
+            );
+            files[key].mv(absPath, err => {
+                if (err) return res.status(500).json({ status: 'error', message: err });
+            });
+            const relPath = path.join(
+                'public',
+                'imgs',
+                `hotels`,
+                `${newHotel.id}`,
+                files[key].name,
+            );
+            imgsPath.push(relPath);
+        });
+
+        newHotel.imgs = imgsPath;
+        await newHotel.save();
 
         return res.status(201).json({
             message: 'New hotel created sucessfully',

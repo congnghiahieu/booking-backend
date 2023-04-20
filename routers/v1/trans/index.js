@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const transController = require('../../../controllers/trans');
+const verifyPagingParams = require('../../../middlewares/verifyPagingParams');
 
 /*
   GET /v1/trans
   GET /v1/trans?user_id
 */
-router.get('/', transController.getTrans);
+router.get('/', verifyPagingParams, transController.getTrans);
 /*
   POST /v1/trans
 */

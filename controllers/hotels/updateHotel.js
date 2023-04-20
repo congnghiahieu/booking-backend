@@ -28,7 +28,26 @@ const updateHotelInfoById = async (req, res) => {
         }
 
         // Update new information
-        if (name) hotel.name = name;
+        // Update new information
+        if (name) {
+            // Check if name is available
+            // Check for duplicate service name
+            const otherHtList = await HotelModel.find({
+                _id: {
+                    $ne: id,
+                },
+            })
+                .lean()
+                .exec();
+            if (otherHtList?.length) {
+                if (!otherHtList.every(ht => ht.name != name)) {
+                    return res.status(409).json({
+                        message: 'Same hotel name',
+                    });
+                }
+            }
+            hotel.name = name;
+        }
         if (title) hotel.title = title;
         if (phone) hotel.phone = phone;
         if (email) hotel.email = email;

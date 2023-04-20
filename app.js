@@ -46,7 +46,7 @@ app.use(cookieParser());
   Cho phép các file tĩnh luôn được server phát hiện ra
   Các file tĩnh trong thư mục public: các file ảnh sẽ được request tải từ client, ...
 */
-app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Routers
 app.use(require('./routers'));

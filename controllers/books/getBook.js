@@ -2,6 +2,8 @@ const UserModel = require('../../model/User');
 const HotelModel = require('../../model/Hotel');
 const BookModel = require('../../model/Book');
 const checkValidMongoId = require('../../utils/checkValidMongoId');
+const pagingFind = require('../../utils/pagingFind');
+
 /*
   GET /v1/books?user_id
   GET /v1/books?hotel_id
@@ -10,7 +12,7 @@ const checkValidMongoId = require('../../utils/checkValidMongoId');
 */
 
 const getBooks = async (req, res) => {
-    const { user_id: userId, hotel_id: hotelId } = req.query;
+    const { user_id: userId, hotel_id: hotelId, page, per_page } = req.query;
 
     // Check only accept one params
     let paramsCount = 0;
@@ -39,7 +41,7 @@ const getBooks = async (req, res) => {
     if (paramsCount != 1) {
         // Check fullfil information
         return res.status(400).json({
-            message: 'Bad request. Need exactly one in in 3 params: user_id, hotel_id, book_id',
+            message: 'Bad request. Need exactly one in 2 params: user_id, hotel_id',
         });
     }
 
@@ -57,9 +59,9 @@ const getBooks = async (req, res) => {
             });
         }
 
-        const bookList = await BookModel.find(curFindField).lean().exec();
+        const bookList = await pagingFind(page, per_page, BookModel, curFindField);
 
-        console.log(bookList);
+        // console.log(bookList);
         return res.status(200).json(bookList);
     } catch (err) {
         console.log(err);

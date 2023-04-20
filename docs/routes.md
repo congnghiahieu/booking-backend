@@ -1,16 +1,26 @@
 **TODO**:
 
--   Hotel get
--   Service get delete
--   Transaction get delete
--   Book create check sự tồn tại của userId, serviceId, hotelId strict hơn
--   Comment create check sự tồn tại của userId, hotelId
+Tạo 1 book đồng thời cũng tạo 1 trans
+Xoá 1 book cũng xoá 1 trans của nó
 
-Viết middleware check param required,check file (image)
+Viết middleware check param required (clean code)
 Tạo folder services
-Kiểm tra lại các route hiện có xem code đã tối ưu chưa (về cả logic lẫn query)
-Phân trang
+
+Phân trang: get user list, get hotel list, get service list, get book list, get trans, get comment list
+Request: page=, per_page=
+Response: {
+total:
+total_page:
+data: []
+meta: {
+page:
+per_page:
+},
+}
+
 Đánh index
+
+Future features: Login bằng gg (Dùng Auth0, passport.js), Lưu file vào Cloud Storage, rate limiter, thông báo qua mail bằng mailgun hoặc twillio, thanh toán visa bằng stripe
 
 # 1. Auth
 

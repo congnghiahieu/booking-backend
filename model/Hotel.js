@@ -33,7 +33,7 @@ const HotelSchema = new Schema(
             trim: true,
             required: true,
         },
-        thumbnails: [String],
+        imgs: [String],
         location: {
             nation: {
                 type: String,

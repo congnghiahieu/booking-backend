@@ -1,6 +1,7 @@
 const TransactionModel = require('../../model/Transaction');
 const UserModel = require('../../model/User');
 const checkValidMongoId = require('../../utils/checkValidMongoId');
+const pagingFind = require('../../utils/pagingFind');
 
 /*
   GET /v1/trans
@@ -8,7 +9,7 @@ const checkValidMongoId = require('../../utils/checkValidMongoId');
 */
 
 const getTrans = async (req, res) => {
-    const { user_id: userId } = req.query;
+    const { user_id: userId, page, per_page } = req.query;
 
     let findField = {};
 
@@ -33,7 +34,7 @@ const getTrans = async (req, res) => {
             }
         }
 
-        const transList = await TransactionModel.find(findField).lean().exec();
+        const transList = await pagingFind(page, per_page, TransactionModel, findField);
 
         console.log(transList);
 

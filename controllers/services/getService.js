@@ -1,6 +1,7 @@
 const ServiceModel = require('../../model/Service');
 const HotelModel = require('../../model/Hotel');
 const checkValidMongoId = require('../../utils/checkValidMongoId');
+const pagingFind = require('../../utils/pagingFind');
 
 /*
   GET /v1/services
@@ -9,7 +10,7 @@ const checkValidMongoId = require('../../utils/checkValidMongoId');
 */
 
 const getServices = async (req, res) => {
-    const { id, hotel_id: hotelId } = req.query;
+    const { id, hotel_id: hotelId, page, per_page } = req.query;
 
     // Check only accept one params
     let paramsCount = 0;
@@ -45,16 +46,14 @@ const getServices = async (req, res) => {
     try {
         // If no param use, find all
         if (!curId) {
-            const serviceList = await ServiceModel.find().lean().exec();
-
-            return res.status(200).json(serviceList);
+            const serviceList = await pagingFind(page, per_page, ServiceModel);
+            res.status(200).json(serviceList);
         }
 
         // If 1 param use (id or hotel_id)
 
         // Check for exist service or hotel
         const cur = await curModel.findById(curId).lean().exec();
-
         if (!cur) {
             return res.status(400).json({
                 message: `Bad request. ${id ? 'service' : 'hotel'} with ${curId} not found`,
@@ -65,8 +64,7 @@ const getServices = async (req, res) => {
         if (id) return res.status(200).json(cur);
 
         // If find service by hotel id
-        const serviceList = await ServiceModel.find({ hotelId }).lean().exec();
-
+        const serviceList = await pagingFind(page, per_page, ServiceModel, { hotelId: hotelId });
         return res.status(200).json(serviceList);
     } catch (err) {
         console.log(err);

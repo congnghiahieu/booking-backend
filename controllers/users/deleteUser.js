@@ -5,7 +5,7 @@ const checkValidMongoId = require('../../utils/checkValidMongoId');
   DELETE /v1/users
 */
 
-const deletUserById = async (req, res) => {
+const deleteUserById = async (req, res) => {
     const { id } = req.body;
 
     // Check for fullfil information
@@ -29,6 +29,8 @@ const deletUserById = async (req, res) => {
 
         const result = await user.deleteOne();
 
+        console.log(result);
+
         return res.status(200).json({
             message: `User name ${result.username} with ID ${result._id} deleted`,
         });
@@ -42,5 +44,5 @@ const deletUserById = async (req, res) => {
 };
 
 module.exports = {
-    deletUserById,
+    deleteUserById,
 };

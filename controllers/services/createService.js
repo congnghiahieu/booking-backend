@@ -1,6 +1,7 @@
 const ServiceModel = require('../../model/Service');
 const HotelModel = require('../../model/Hotel');
 const checkValidMongoId = require('../../utils/checkValidMongoId');
+const path = require('path');
 
 /*
   POST /v1/services
@@ -10,7 +11,6 @@ const createService = async (req, res) => {
     const {
         hotelId,
         name,
-        images,
         prices,
         totalRooms,
         availableRooms = totalRooms,
@@ -19,7 +19,7 @@ const createService = async (req, res) => {
     } = req.body;
 
     // Check for data fullfil
-    if (!hotelId || !name || !images || !prices || !totalRooms) {
+    if (!hotelId || !name || !prices || !totalRooms) {
         return res.status(400).json({
             message:
                 'Bad request. Need full information includes: hotelId, name, prices, totalRooms',
@@ -29,13 +29,6 @@ const createService = async (req, res) => {
     // Check valid mongo ID
     const { isValid, errMsg, errCode } = checkValidMongoId(hotelId);
     if (!isValid) return res.status(errCode).json(errMsg);
-
-    // Check for hotel thumbnails
-    if (!Array.isArray(images) || !images?.length) {
-        return res.status(400).json({
-            message: 'Bad request. Need images as a non-empty array',
-        });
-    }
 
     try {
         // Check for exist hotel
@@ -57,10 +50,9 @@ const createService = async (req, res) => {
         }
 
         // Create hotel
-        const newService = await ServiceModel.create({
+        const newService = new ServiceModel({
             hotelId,
             name,
-            images,
             prices,
             totalRooms,
             availableRooms,
@@ -69,6 +61,36 @@ const createService = async (req, res) => {
                 area,
             },
         });
+
+        const files = req.files;
+        let imgsPath = [];
+        // Save img
+        Object.keys(files).forEach(key => {
+            const absPath = path.join(
+                __dirname,
+                '../',
+                '../',
+                'public',
+                'imgs',
+                `services`,
+                `${newService.id}`,
+                files[key].name,
+            );
+            files[key].mv(absPath, err => {
+                if (err) return res.status(500).json({ status: 'error', message: err });
+            });
+            const relPath = path.join(
+                'public',
+                'imgs',
+                `services`,
+                `${newService.id}`,
+                files[key].name,
+            );
+            imgsPath.push(relPath);
+        });
+
+        newService.images = imgsPath;
+        await newService.save();
 
         console.log(newService);
 

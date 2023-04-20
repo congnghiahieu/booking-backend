@@ -1,11 +1,12 @@
 const router = require('express').Router();
 const cmtController = require('../../../controllers/cmts');
+const verifyPagingParams = require('../../../middlewares/verifyPagingParams');
 
 /*
   GET /v1/cmts/?hotel_id=
   GET /v1/cmts/?user_id=
 */
-router.get('/', cmtController.getComments);
+router.get('/', verifyPagingParams, cmtController.getComments);
 /*
   POST /v1/cmts
 */

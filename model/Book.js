@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { BOOK_STATUS } = require('../config/bookConst');
 
 const BookSchema = new Schema(
     {
@@ -26,6 +27,17 @@ const BookSchema = new Schema(
             // ref: 'Transaction',
             type: Schema.Types.ObjectId,
             // required: true,
+        },
+        status: {
+            type: String,
+            default: BOOK_STATUS.ONFLY,
+        },
+        isCanceled: {
+            type: Boolean,
+            default: false,
+        },
+        canceledTime: {
+            type: Date,
         },
         period: {
             start: {

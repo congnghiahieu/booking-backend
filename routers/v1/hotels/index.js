@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const hotelController = require('../../../controllers/hotels');
-const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload')
 const filesPayloadExists = require('../../../middlewares/filesPayloadExists');
 const fileSizeLitmiter = require('../../../middlewares/fileSizeLimiter');
 const fileExtLimiter = require('../../../middlewares/fileExtLimiter');

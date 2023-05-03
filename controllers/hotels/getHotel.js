@@ -1,13 +1,15 @@
 const HotelModel = require('../../model/Hotel');
 const checkValidMongoId = require('../../utils/checkValidMongoId');
 const pagingFind = require('../../utils/pagingFind');
+const { getSearchRegex } = require('../../utils/getSearchRegex');
 
 /*
   GET /v1/hotels?hotel_id
 */
 
 const getHotels = async (req, res) => {
-    const { hotel_id: hotelId, page, per_page } = req.query;
+    const { hotel_id: hotelId, page, per_page, city } = req.query;
+    console.log(req.query);
 
     // Check for hotel id (query single hotel)
     if (hotelId) {
@@ -26,10 +28,16 @@ const getHotels = async (req, res) => {
             }
             return res.status(200).json(hotel);
         }
+        let findField = {};
+        if (city)
+            findField = {
+                'location.city': {
+                    '$in': getSearchRegex(city),
+                },
+            };
+        const hotelList = await pagingFind(page, per_page, HotelModel, findField);
 
-        const hotelList = await pagingFind(page, per_page, HotelModel);
-
-        res.status(200).json(hotelList);
+        return res.status(200).json(hotelList);
     } catch (err) {
         console.log(err);
         return res.status(422).json({

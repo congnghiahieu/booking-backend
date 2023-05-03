@@ -95,7 +95,7 @@ const deleteBook = async (req, res) => {
                 : `${result.deletedCount} book of hotel with ID ${hotelId}`
         } successfully`;
 
-        res.status(200).json({ message: resMsg, deleted: result.deletedCount });
+        return res.status(200).json({ message: resMsg, deleted: result.deletedCount });
     } catch (err) {
         console.log(err);
         return res.status(422).json({

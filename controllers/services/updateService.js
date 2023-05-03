@@ -29,7 +29,7 @@ const updateServiceInfoById = async (req, res) => {
 
     try {
         // Check for exist hotel
-        const hotel = await HotelModel.findById(hotelId).lean().exec();
+        const hotel = await HotelModel.findById(hotelId).exec();
 
         if (!hotel) {
             return res.status(400).json({ message: 'Bad request. Hotel not found' });
@@ -62,15 +62,20 @@ const updateServiceInfoById = async (req, res) => {
             }
             service.name = name;
         }
-        if (prices) service.prices = prices;
+        if (prices) {
+            service.prices = prices;
+            // Cập nhật giá hotel
+            if (!hotel.cheapest || hotel.cheapest > service.prices) {
+                hotel.cheapest = service.prices;
+                hotel.discountOfCheapest = service.discount;
+            }
+        }
         if (totalRooms) service.totalRooms = totalRooms;
         if (availableRooms) service.availableRooms = availableRooms;
         if (beds) service.info.beds = beds;
         if (area) service.info.area = area;
 
-        const result = await service.save();
-
-        console.log(result);
+        await Promise.all([hotel.save(), service.save()]);
 
         const resMsg = `Service ID ${result._id} with ${name ? 'new name' : 'name'} ${
             result.name

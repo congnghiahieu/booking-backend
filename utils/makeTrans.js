@@ -6,16 +6,18 @@ const createErr = require('./createErr');
 
 const makeTrans = async (
     userId,
-    cardSeries,
+    card,
     value,
     transType = TRANS_TYPES.BOOKING,
     status = TRANS_STATUS.SUCCESS,
 ) => {
     // Check for data fullfil
-    if (!userId || !cardSeries || !value) {
+    const { cardName, cardSeries, cardExpiredate, cardCvc } = card;
+
+    if (!userId || !cardName || !cardSeries || !cardExpiredate || !cardCvc || !value) {
         return createErr(
             400,
-            'Bad request. Need full information includes: user id, card series, value',
+            'Bad request. Need full information includes: user id, cardName, cardSeries, cardExpiredate,cardCvc, value',
         );
     }
 
@@ -32,10 +34,15 @@ const makeTrans = async (
             return createErr(400, `Bad request. User with ID ${userId} not found`);
         }
 
-        // Create hotel
+        // Create trans
         const newTrans = await TransactionModel.create({
             userId,
-            cardSeries,
+            card: {
+                cardName,
+                cardSeries,
+                cardExpiredate: new Date(cardExpiredate),
+                cardCvc,
+            },
             value,
             transType: transType || TRANS_TYPES.BOOKING,
             status: status || TRANS_STATUS.SUCCESS,

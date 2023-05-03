@@ -12,8 +12,10 @@ const registerNewUser = async (req, res) => {
             message: `Bad request. Username and password are required`,
         });
     }
-    // Check if user already exists
-    const duplicate = await UserModel.findOne({ username: newUserName }).lean().exec();
+    // Check if user already exists (case insensitive)
+    const duplicate = await UserModel.findOne({ username: new RegExp(newUserName, 'i') })
+        .lean()
+        .exec();
     if (duplicate) {
         return res.status(409).json({
             message: `Account is already exists`,
@@ -29,7 +31,7 @@ const registerNewUser = async (req, res) => {
             password: hashedPwd,
         });
         console.log(newUser);
-        res.status(201).json({
+        return res.status(201).json({
             message: `User ${newUserName} created successfully!`,
         });
     } catch (err) {

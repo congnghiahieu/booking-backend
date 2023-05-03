@@ -26,12 +26,15 @@ const login = async (req, res) => {
         if (isRightPwd) {
             // Login thành công thì user được cấp 1 accessToken gửi về qua JSON, 1 refresh token gửi về qua httpOnly cookie
             // create access token
-            const roles = Object.values(foundUser.roles).filter(Boolean);
             const newAccessToken = jwt.sign(
                 {
                     'UserInfo': {
                         username: foundUser.username,
-                        roles,
+                        name: foundUser.name || '',
+                        id: foundUser.id,
+                        roles: foundUser.roles,
+                        fav: foundUser.fav,
+                        cart: foundUser.cart,
                     },
                 },
                 process.env.ACCESS_TOKEN_SERECT,
@@ -91,12 +94,12 @@ const login = async (req, res) => {
                 maxAge: 24 * 60 * 60 * 1000,
             });
 
-            res.status(200).json({
+            return res.status(200).json({
                 accessToken: newAccessToken,
                 message: `User ${userLoginName} login successfully!`,
             });
         } else {
-            res.status(401).json({
+            return res.status(401).json({
                 message: `Invalid password`,
             });
         }

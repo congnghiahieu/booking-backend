@@ -17,7 +17,7 @@ const getUsers = async (req, res) => {
 
     try {
         if (userId) {
-            const user = await UserModel.findById(userId).lean().exec();
+            const user = await UserModel.findById(userId).select('-password').lean().exec();
             if (!user) {
                 // If find single user and not found mean wrong id
                 return res.status(400).json({
@@ -27,9 +27,9 @@ const getUsers = async (req, res) => {
             return res.status(200).json(user);
         }
 
-        const userList = await pagingFind(page, per_page, UserModel);
+        const userList = await pagingFind(page, per_page, UserModel, {}, '-password');
 
-        res.status(200).json(userList);
+        return res.status(200).json(userList);
     } catch (err) {
         console.log(err);
         return res.status(422).json({

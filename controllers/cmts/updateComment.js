@@ -6,7 +6,7 @@ const checkValidMongoId = require('../../utils/checkValidMongoId');
 */
 
 const updateCmtById = async (req, res) => {
-    const { id, title, content } = req.body;
+    const { id, title, content, point } = req.body;
 
     // Check for data fullfil
     if (!id) {
@@ -30,6 +30,7 @@ const updateCmtById = async (req, res) => {
         // Update new information
         if (title) cmt.title = title;
         if (content) cmt.content = content;
+        if (point) cmt.point = point;
 
         const result = await cmt.save();
 

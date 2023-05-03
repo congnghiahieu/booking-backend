@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
+const slug = require('mongoose-slug-updater');
+mongoose.plugin(slug);
 const Schema = mongoose.Schema;
+const { rmWs } = require('../utils/getSearchRegex');
+const { getRan, getDiscount } = require('../utils/random');
 
 const ServiceSchema = new Schema(
     {
@@ -12,10 +16,24 @@ const ServiceSchema = new Schema(
             trim: true,
             required: true,
         },
+        slug: {
+            type: String,
+            slug: 'name',
+            uniqueSlug: true,
+        },
         images: [String],
         prices: {
             type: Number,
             required: true,
+            default: () => getRan(400000, 1000000, 3),
+        },
+        discount: {
+            type: Number,
+            default: () => getDiscount(),
+        },
+        point: {
+            type: Number,
+            default: () => getRan(8, 10, 1),
         },
         totalRooms: {
             type: Number,
@@ -67,6 +85,10 @@ const ServiceSchema = new Schema(
         timestamps: true,
     },
 );
+
+ServiceSchema.pre('save', function () {
+    this.name = rmWs(this.name);
+});
 
 ServiceSchema.virtual('occupiedRooms').get(function () {
     return this.totalRooms - this.availableRooms;

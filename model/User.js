@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { rmWs } = require('../utils/getSearchRegex');
 
 const UserSchema = new Schema(
     {
@@ -52,7 +53,7 @@ const UserSchema = new Schema(
         // },
         refreshToken: [String],
         // isGithub: {
-        //   type: Schema.Types.Boolean,
+        //   type: Sccbf3hhema.Types.Boolean,
         //   default: false,
         // },
         fav: {
@@ -66,6 +67,14 @@ const UserSchema = new Schema(
         timestamps: true,
     },
 );
+
+UserSchema.pre('save', function () {
+    this.address.others = rmWs(this.address.others);
+    this.address.nation = rmWs(this.address.nation);
+    this.contact.phone = rmWs(this.contact.phone);
+    this.contact.email = rmWs(this.contact.email);
+    this.name = rmWs(this.name);
+});
 
 const UserModel = mongoose.model('User', UserSchema);
 

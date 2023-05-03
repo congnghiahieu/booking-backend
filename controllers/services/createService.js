@@ -32,7 +32,7 @@ const createService = async (req, res) => {
 
     try {
         // Check for exist hotel
-        const hotel = await HotelModel.findById(hotelId).lean().exec();
+        const hotel = await HotelModel.findById(hotelId).exec();
 
         if (!hotel) {
             return res.status(400).json({ message: 'Bad request. Hotel ID not found' });
@@ -88,11 +88,14 @@ const createService = async (req, res) => {
             );
             imgsPath.push(relPath);
         });
-
         newService.images = imgsPath;
-        await newService.save();
+        // nếu tạo thành công 1 service, cập nhật thông tin cho hotel
+        if (!hotel.cheapest || hotel.cheapest > newService.prices) {
+            hotel.cheapest = newService.prices;
+            hotel.discountOfCheapest = newService.discount;
+        }
 
-        console.log(newService);
+        await Promise.all([hotel.save(), newService.save()]);
 
         return res.status(201).json({
             message: `New service ${newService.name} of hotel ${hotel.name} created sucessfully`,

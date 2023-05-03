@@ -5,6 +5,8 @@ const ServiceModel = require('../../model/Service');
 const checkValidMongoId = require('../../utils/checkValidMongoId');
 const findDoc = require('../../utils/findDoc');
 const makeTrans = require('../../utils/makeTrans');
+const { add } = require('date-fns');
+const { BOOK_STATUS } = require('../../config/bookConst');
 
 /*
   POST /v1/books
@@ -12,73 +14,114 @@ const makeTrans = require('../../utils/makeTrans');
 
 /* Tạo 1 book đồng thời cũng tạo 1 trans*/
 const createBook = async (req, res) => {
-    const { userId, hotelId, serviceId, start, end } = req.body;
-    // Trans info
-    const { cardSeries, value, transType } = req.body;
-    // Tạo giao dịch, giao dịch thành công thì mới tạo book
-    // Hiện tại giao dịch mặc định là loại giao dịch đặt phòng và trạng thái thành công
-    const transRes = await makeTrans(userId, cardSeries, value, transType);
-    if (transRes.isError) {
-        res.status(transRes.errCode).json({
-            message: transRes.errMsg,
-        });
-    }
-
     // Book info
+    const { userId, cusInfo, hotelId, serviceId, start, end } = req.body;
+
     // Check for data fullfil
-    if (!userId || !hotelId || !serviceId) {
-        await transRes.transaction.deleteOne();
+    // Fullfil customer info
+    const { cusName, cusEmail, cusPhone } = cusInfo;
+    if (!userId || !cusName || !cusEmail || !cusPhone || !hotelId || !serviceId) {
         return res.status(400).json({
-            message: 'Bad request. Need full information includes: user id, hotel id, service id',
+            message:
+                'Bad request. Need full information includes: user id, customer name, customer email, customer phone number, hotel id, service id',
         });
     }
 
     // Check valid mongo ID
     const { isValid, errMsg, errCode } = checkValidMongoId(userId, hotelId, serviceId);
     if (!isValid) {
-        await transRes.transaction.deleteOne();
         return res.status(errCode).json(errMsg);
     }
 
+    let transRes;
+
     try {
         // Check valid info
-
-        // Valid date time
-        if (!start) start = Date.now();
-        // 2100-12-31
-        if (!end) end = Date.UTC(2100, 11, 31);
-
         // Check valid date value
+        if (!start) start = new Date();
+        // YYYY-MM-DD
+        if (!end) end = add(start, { days: 1 });
         if (new Date(start) > new Date(end)) {
-            await transRes.transaction.deleteOne();
             return res.status(400).json({
                 message: 'Bad request. Start date greater than end date',
             });
         }
 
         // Check user, hotel and service exist
+        let user, hotel, service;
         await Promise.all([
-            findDoc('user', { _id: userId }, UserModel)(),
+            findDoc('user', { _id: userId }, UserModel, true)(),
             findDoc('hotel', { _id: hotelId }, HotelModel)(),
-            findDoc('service', { _id: serviceId, hotelId: hotelId }, ServiceModel)(),
-        ]);
+            findDoc('service', { _id: serviceId }, ServiceModel)(),
+        ]).then(([userArr, hotelArr, serviceArr]) => {
+            user = userArr[0];
+            hotel = hotelArr[0];
+            service = serviceArr[0];
+        });
+        // console.log(user instanceof mongoose.Document);
+        // console.log(user.constructor.name);
+        // console.log(hotel instanceof mongoose.Document);
+        // console.log(hotel.constructor.name);
+        // console.log(service instanceof mongoose.Document);
+        // console.log(service.constructor.name);
+
+        // Kiểm tra service xem còn phòng không
+        if (service.availableRooms <= 0) {
+            return res.status(409).json({
+                message: 'Service fullly booked',
+            });
+        }
 
         // Create Book
+        // Trạng thái của 1 book. Book không bao giờ bị xoá. Chỉ có các trạng thái sau:
+        // Bị huỷ
+        // Đã hoàn thành
+        // Đang trong quá trình
+        // Chuẩn bị diễn ra
         const newBook = await BookModel.create({
             userId,
+            cusInfo: {
+                cusName,
+                cusEmail,
+                cusPhone,
+            },
             hotelId,
             serviceId,
-            transactionId: transRes.transaction.id,
             isPaid: true,
+            status: BOOK_STATUS.ONOGING,
             period: {
                 start,
                 end,
             },
         });
 
-        await transRes.transaction.save();
+        // Trans info
+        const { card, value, transType } = req.body;
+        // Tạo giao dịch
+        // Hiện tại giao dịch mặc định là loại giao dịch đặt phòng và trạng thái thành công
+        transRes = await makeTrans(userId, card, value, transType);
+        if (transRes.isError) {
+            await newBook.deleteOne();
+            return res.status(transRes.errCode).json({
+                message: transRes.errMsg,
+            });
+        }
 
-        console.log(newBook);
+        // Khi xoá 1 lượt đặt phòng thì khôi phục lại số phòng cho service
+        // Hotel số lượt từng đặt vẫn giữ nguyên, số lượt đặt hiện tại thì trừ 1
+        // History user book giữ nguyên, hiện tại trừ 1
+        // Nếu tạo book và giao dịch thành công
+        newBook.transactionId = transRes.transaction.id;
+        service.availableRooms -= 1;
+        hotel.bookedCount += 1;
+
+        await Promise.all([
+            newBook.save(),
+            transRes.transaction.save(),
+            user.save(),
+            hotel.save(),
+            service.save(),
+        ]);
 
         return res.status(201).json({
             message: 'New book created sucessfully',

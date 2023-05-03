@@ -36,8 +36,6 @@ const getTrans = async (req, res) => {
 
         const transList = await pagingFind(page, per_page, TransactionModel, findField);
 
-        console.log(transList);
-
         return res.status(200).json(transList);
     } catch (err) {
         console.log(err);

@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const slug = require('mongoose-slug-updater');
 mongoose.plugin(slug);
 const Schema = mongoose.Schema;
+const { rmWs } = require('../utils/getSearchRegex');
+const { getRan, getDiscount } = require('../utils/random');
 
 const HotelSchema = new Schema(
     {
@@ -38,14 +40,18 @@ const HotelSchema = new Schema(
             nation: {
                 type: String,
                 trim: true,
-                default: 'Vietnam',
+                default: 'Việt Nam',
             },
             city: {
                 type: String,
                 trim: true,
-                default: 'Ha Noi',
+                default: 'Hà Nội',
             },
             province: {
+                type: String,
+                trim: true,
+            },
+            district: {
                 type: String,
                 trim: true,
             },
@@ -59,6 +65,7 @@ const HotelSchema = new Schema(
         },
         stars: {
             type: Number,
+            default: 4,
         },
         cmtSum: {
             type: Number,
@@ -67,6 +74,18 @@ const HotelSchema = new Schema(
         bookedCount: {
             type: Number,
             default: 0,
+        },
+        cheapest: {
+            type: Number,
+            // default: 500000,
+        },
+        discountOfCheapest: {
+            type: Number,
+            // default: () => getDiscount(),
+        },
+        point: {
+            type: Number,
+            default: () => getRan(7, 9, 1),
         },
         availableTime: {
             start: {
@@ -83,6 +102,23 @@ const HotelSchema = new Schema(
         timestamps: true,
     },
 );
+
+HotelSchema.pre('save', function () {
+    this.location.nation = rmWs(this.location.nation);
+    this.location.city = rmWs(this.location.city);
+    this.location.province = rmWs(this.location.province);
+    this.location.district = rmWs(this.location.district);
+    this.location.others = rmWs(this.location.others);
+    this.desc = rmWs(this.desc);
+    this.contact.phone = rmWs(this.contact.phone);
+    this.contact.email = rmWs(this.contact.email);
+    this.title = rmWs(this.title);
+    this.name = rmWs(this.name);
+});
+
+HotelSchema.virtual('discountPrice').get(function () {
+    return (this.orginalPrice * this.discount) / 100;
+});
 
 // HotelSchema.index({ name: 1, title: 1 });
 // HotelSchema.index({ 'location.nation': 1, 'location.city': 1 });

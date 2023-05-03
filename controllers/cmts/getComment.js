@@ -3,6 +3,7 @@ const HotelModel = require('../../model/Hotel');
 const CommentModel = require('../../model/Comment');
 const checkValidMongoId = require('../../utils/checkValidMongoId');
 const pagingFind = require('../../utils/pagingFind');
+const { default: mongoose } = require('mongoose');
 
 /*
   GET /v1/cmts?user_id
@@ -60,7 +61,20 @@ const getComments = async (req, res) => {
         }
 
         // const cmtList = await CommentModel.find(curFindField).lean().exec();
-        const cmtList = await pagingFind(page, per_page, CommentModel, curFindField);
+        let cmtList = await pagingFind(page, per_page, CommentModel, curFindField);
+        // console.log(cmtList instanceof mongoose.Document);
+        // cmtList = CommentModel.hydrate(cmtList);
+        // console.log(cmtList instanceof mongoose.Document);
+        console.log(cmtList);
+
+        // let cmtList = await Promise.all([
+        //     CommentModel.count(curFindField),
+        //     CommentModel.find(curFindField).sort({ updatedAt: -1 }).populate({
+        //         path: 'userId',
+        //         select: ''
+        //     }).skip((page - 1) * per_page)
+        //     .limit(per_page),
+        // ]);
 
         // console.log(cmtList);
         return res.status(200).json(cmtList);

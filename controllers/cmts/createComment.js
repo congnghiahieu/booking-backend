@@ -9,13 +9,13 @@ const findDoc = require('../../utils/findDoc');
 */
 
 const createComment = async (req, res) => {
-    const { userId, hotelId, title, content } = req.body;
+    const { userId, hotelId, title, content, point } = req.body;
 
     // Check for data fullfil
-    if (!userId || !hotelId || !title || !content) {
+    if (!userId || !hotelId || !title || !content || !point || point < 0 || point > 10) {
         return res.status(400).json({
             message:
-                'Bad request. Need full information includes: user id, hotel id, title, content',
+                'Bad request. Need full information includes: user id, hotel id, title, content, point (0 - 10)',
         });
     }
 
@@ -25,20 +25,30 @@ const createComment = async (req, res) => {
 
     try {
         // Check user, hotel exist
+        let user, hotel;
         await Promise.all([
             findDoc('user', { _id: userId }, UserModel)(),
             findDoc('hotel', { _id: hotelId }, HotelModel)(),
-        ]);
+        ]).then(([userArr, hotelArr]) => {
+            user = userArr[0];
+            hotel = hotelArr[0];
+        });
 
         // Create comment
         const newComment = await CommentModel.create({
             userId,
+            user: {
+                name: user.name || user.username,
+                nation: user.address?.nation || '',
+            },
             hotelId,
             title,
             content,
+            point,
         });
 
-        console.log(newComment);
+        hotel.cmtSum += 1;
+        await Promise.all([newComment.save(), hotel.save()]);
 
         return res.status(201).json({
             message: 'New comment created sucessfully',

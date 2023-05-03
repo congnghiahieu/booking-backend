@@ -4,14 +4,27 @@ const Schema = mongoose.Schema;
 const TransactionSchema = new Schema(
     {
         userId: {
-            // type: mongoose.Schema.Types.ObjectId,
-            // ref: 'User',
             type: Schema.Types.ObjectId,
             required: true,
         },
-        cardSeries: {
-            type: String,
-            required: true,
+        card: {
+            cardName: {
+                type: String,
+                required: true,
+            },
+            cardSeries: {
+                type: String,
+                required: true,
+            },
+            cardExpiredate: {
+                type: Date,
+                required: true,
+                default: () => new Date('01-01-2026'),
+            },
+            cardCvc: {
+                type: Number,
+                required: true,
+            },
         },
         value: {
             type: Number,

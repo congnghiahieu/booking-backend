@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { BOOK_STATUS } = require('../config/bookConst');
+const { rmWs } = require('../utils/getSearchRegex');
 
 const BookSchema = new Schema(
     {
@@ -9,6 +10,20 @@ const BookSchema = new Schema(
             // ref: 'User',
             type: Schema.Types.ObjectId,
             required: true,
+        },
+        cusInfo: {
+            cusName: {
+                type: String,
+                required: true,
+            },
+            cusEmail: {
+                type: String,
+                required: true,
+            },
+            cusPhone: {
+                type: String,
+                required: true,
+            },
         },
         hotelId: {
             // type: Schema.Types.ObjectId,
@@ -30,7 +45,7 @@ const BookSchema = new Schema(
         },
         status: {
             type: String,
-            default: BOOK_STATUS.ONFLY,
+            default: BOOK_STATUS.ONOGING,
         },
         isCanceled: {
             type: Boolean,
@@ -58,6 +73,12 @@ const BookSchema = new Schema(
         timestamps: true,
     },
 );
+
+BookSchema.pre('save', function () {
+    this.cusInfo.cusName = rmWs(this.cusInfo.cusName);
+    this.cusInfo.cusEmail = rmWs(this.cusInfo.cusEmail);
+    this.cusInfo.cusPhone = rmWs(this.cusInfo.cusPhone);
+});
 
 const BookModel = mongoose.model('Book', BookSchema);
 

@@ -47,11 +47,10 @@ const getServices = async (req, res) => {
         // If no param use, find all
         if (!curId) {
             const serviceList = await pagingFind(page, per_page, ServiceModel);
-            res.status(200).json(serviceList);
+            return res.status(200).json(serviceList);
         }
 
         // If 1 param use (id or hotel_id)
-
         // Check for exist service or hotel
         const cur = await curModel.findById(curId).lean().exec();
         if (!cur) {

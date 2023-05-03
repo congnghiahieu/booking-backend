@@ -6,7 +6,7 @@ Xoá 1 book cũng xoá 1 trans của nó
 Viết middleware check param required (clean code)
 Tạo folder services
 
-Phân trang: get user list, get hotel list, get service list, get book list, get trans, get comment list
+(Done) Phân trang: get user list, get hotel list, get service list, get book list, get trans, get comment list
 Request: page=, per_page=
 Response: {
 total:

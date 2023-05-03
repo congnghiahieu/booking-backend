@@ -52,12 +52,15 @@ const refreshNewToken = async (req, res) => {
         if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
 
         // ReTo còn hạn
-        const roles = Object.values(foundUser.roles);
         const newAccessToken = jwt.sign(
             {
                 'UserInfo': {
                     username: foundUser.username,
-                    roles,
+                    name: foundUser.name || '',
+                    id: foundUser.id,
+                    roles: foundUser.roles,
+                    fav: foundUser.fav,
+                    cart: foundUser.cart,
                 },
             },
             process.env.ACCESS_TOKEN_SERECT,

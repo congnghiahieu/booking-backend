@@ -1,6 +1,8 @@
 const BOOK_STATUS = {
-    ONFLY: 'onfly',
     CANCELED: 'canceled',
+    PASSED: 'passed',
+    INPROCESS: 'inprocess',
+    ONOGING: 'ongoing',
 };
 
 module.exports = {

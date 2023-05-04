@@ -4,7 +4,7 @@ const path = require('path');
 
 const GOOGLE_API_FOLDER_ID = '1eryH-h-th3CQim1luJuH8XA5JNQ-dzLH';
 
- const uploadFilesToGG =  async (filePath) =>{
+ const uploadFilesToGG =  async (filePath,hotelId) =>{
     try {
         const auth = new google.auth.GoogleAuth({
             keyFile: './googleapis.json',

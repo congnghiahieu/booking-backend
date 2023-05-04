@@ -1,8 +1,9 @@
 const HotelModel = require('../../../model/Hotel');
 const path = require('path');
 const checkValidMongoId = require('../../../utils/checkValidMongoId');
-const {uploadFilesToGG} = require('./addImageGG')
-
+const { uploadFilesToGG } = require('./addImageGG')
+const { createFiles } = require('./createFiles')
+const {checkFolderExists} = require('./checkFolder');
 /*
     POST /v1/hotels/images/:id
 */
@@ -29,9 +30,9 @@ const addImagesByHotelId = async (req, res) => {
         if (!hotel) {
             return res.status(400).json({ message: 'Bad request. Hotel not found' });
         }
-    
+
         const files = req.files;
-        console.log(files)
+        
         // Save img
         Object.keys(files).forEach(key => {
             const absPath = path.join(
@@ -45,15 +46,18 @@ const addImagesByHotelId = async (req, res) => {
                 `${hotel.id}`,
                 files[key].name,
             );
-            
+
             files[key].mv(absPath, err => {
                 if (err) return res.status(500).json({ status: 'error', message: err });
             });
             const relPath = path.join('public', 'imgs', `hotels`, `${hotel.id}`, files[key].name);
-            
+
             //hotel.imgs.push(relPath);
         });
-        
+
+        const folderId = await checkFolderExists(hotel);
+        console.log(`FolderId la ${folderId}`);
+       
         await Promise.all(Object.keys(files).map(key => {
             const absPath = path.join(
                 __dirname,
@@ -61,17 +65,18 @@ const addImagesByHotelId = async (req, res) => {
                 '../',
                 '../',
                 'public',
-                'imgs', 
+                'imgs',
                 `hotels`,
                 `${hotel.id}`,
                 files[key].name,
             );
-            return uploadFilesToGG(absPath)
+
+            return createFiles(absPath, folderId);
         })).then(ids => {
             hotel.imgs = [...hotel.imgs, ...ids]
         })
         const saved = await hotel.save();
-        console.log(saved)
+
 
 
         return res.status(201).json({

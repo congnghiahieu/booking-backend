@@ -2,7 +2,7 @@ const fs = require('fs');
 const { google } = require('googleapis');
 const path = require('path');
 
-const GOOGLE_API_FOLDER_ID = '1vywKOk8SAh3NrmB_rqcidbXbkb2hZXVJ';
+
 
 const auth = new google.auth.GoogleAuth({
     keyFile: './googleapis.json',
@@ -30,6 +30,7 @@ const createFiles = async (filePath, folderId) => {
                     field: 'id',
 
                 })
+                console.log(responseFile.data.id);
                 return responseFile.data.id;
     }
     catch (error) {

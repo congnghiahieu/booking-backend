@@ -2,9 +2,8 @@ const fs = require('fs');
 const {google} = require('googleapis');
 const path = require('path');
 
-const GOOGLE_API_FOLDER_ID = '';
 
- const deleteFolders =  async (hotelId) =>{
+ const deleteSingleImageGG =  async (fileId) =>{
     try {
         const auth = new google.auth.GoogleAuth({
             keyFile: './googleapis.json',
@@ -15,18 +14,16 @@ const GOOGLE_API_FOLDER_ID = '';
             auth 
         })
 
-        driveService.files.delete({
-            fileId: hotelId,
-          }, (err, res) => {
-            if (err) return console.log(`Lỗi: ${err}`);
-            console.log(`Thư mục đã được xóa`);
-          }).excecute()
+       await driveService.files.delete({fileId}).excecute()
+
+    
+
         
         
     } catch (error) {
         console.log('Uploading files failed ' + error )
     }
 }
-deleteFolders('643d0dfaa4f50920d4b0b45b');
-module.exports = {deleteFolders};
-//  uploadFilesToGG();
+
+module.exports = {deleteSingleImageGG};
+

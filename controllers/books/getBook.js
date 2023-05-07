@@ -12,7 +12,7 @@ const pagingFind = require('../../utils/pagingFind');
 */
 
 const getBooks = async (req, res) => {
-    const { user_id: userId, hotel_id: hotelId, page, per_page } = req.query;
+    const { user_id: userId, hotel_id: hotelId, page, per_page, populate } = req.query;
 
     // Check only accept one params
     let paramsCount = 0;
@@ -59,9 +59,25 @@ const getBooks = async (req, res) => {
             });
         }
 
-        const bookList = await pagingFind(page, per_page, BookModel, curFindField);
+        let bookList;
+        if (populate == 'true') {
+            bookList = await BookModel.find(curFindField)
+                .populate({
+                    path: 'hotelId',
+                    justOne: true,
+                    select: 'name slug imgs location stars cmtSum bookedCount point',
+                })
+                .populate({
+                    path: 'serviceId',
+                    justOne: true,
+                    select: 'name slug images prices point',
+                })
+                .lean()
+                .exec();
+        } else {
+            bookList = await pagingFind(page, per_page, BookModel, curFindField);
+        }
 
-        // console.log(bookList);
         return res.status(200).json(bookList);
     } catch (err) {
         console.log(err);

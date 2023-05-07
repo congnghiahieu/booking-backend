@@ -6,9 +6,8 @@ const { rmWs } = require('../utils/getSearchRegex');
 const BookSchema = new Schema(
     {
         userId: {
-            // type: Schema.Types.ObjectId,
-            // ref: 'User',
             type: Schema.Types.ObjectId,
+            ref: 'User',
             required: true,
         },
         cusInfo: {
@@ -26,22 +25,18 @@ const BookSchema = new Schema(
             },
         },
         hotelId: {
-            // type: Schema.Types.ObjectId,
-            // ref: 'Hotel',
             type: Schema.Types.ObjectId,
+            ref: 'Hotel',
             required: true,
         },
         serviceId: {
-            // type: Schema.Types.ObjectId,
-            // ref: 'Service',
             type: Schema.Types.ObjectId,
+            ref: 'Service',
             required: true,
         },
         transactionId: {
-            // type: Schema.Types.ObjectId,
-            // ref: 'Transaction',
             type: Schema.Types.ObjectId,
-            // required: true,
+            ref: 'Transaction',
         },
         status: {
             type: String,

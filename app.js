@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const corsOptions = require('./config/corsOptions');
 const connectDB = require('./config/connectDB');
@@ -28,6 +29,10 @@ app.use(credentials);
   Chú ý: Với package cors thì sẽ có preflight cors (với method OPTIONS cụ thể xem log)
 */
 app.use(cors(corsOptions));
+/*
+Helmet helps secure Express apps by setting HTTP response headers.
+*/
+app.use(helmet());
 /*
   Khi form data được submit lên server thì nó sẽ được encoded
   Midleware này có tác dụng decode form data và lưu trong req.body

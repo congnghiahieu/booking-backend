@@ -20,7 +20,7 @@ const createBook = async (req, res) => {
     // Check for data fullfil
     // Fullfil customer info
     const { cusName, cusEmail, cusPhone } = cusInfo;
-    if (!userId || !cusName || !cusEmail || !cusPhone || !hotelId || !serviceId) {
+    if (!userId || !hotelId || !serviceId || !cusName || !cusEmail || !cusPhone) {
         return res.status(400).json({
             message:
                 'Bad request. Need full information includes: user id, customer name, customer email, customer phone number, hotel id, service id',
@@ -48,16 +48,13 @@ const createBook = async (req, res) => {
         }
 
         // Check user, hotel and service exist
-        let user, hotel, service;
-        await Promise.all([
-            findDoc('user', { _id: userId }, UserModel, true)(),
-            findDoc('hotel', { _id: hotelId }, HotelModel)(),
-            findDoc('service', { _id: serviceId }, ServiceModel)(),
-        ]).then(([userArr, hotelArr, serviceArr]) => {
-            user = userArr[0];
-            hotel = hotelArr[0];
-            service = serviceArr[0];
-        });
+
+        const [user, hotel, service] = await Promise.all([
+            findDoc('user', userId, UserModel)(),
+            findDoc('hotel', hotelId, HotelModel)(),
+            findDoc('service', serviceId, ServiceModel)(),
+        ]);
+
         // console.log(user instanceof mongoose.Document);
         // console.log(user.constructor.name);
         // console.log(hotel instanceof mongoose.Document);
@@ -128,7 +125,7 @@ const createBook = async (req, res) => {
         });
     } catch (err) {
         console.log(err);
-        await transRes.transaction.deleteOne();
+        await transRes?.transaction?.deleteOne();
         return res.status(422).json({
             message: `Create book failed. ${err.message}`,
             isError: true,

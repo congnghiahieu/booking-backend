@@ -5,6 +5,7 @@ const TransactionSchema = new Schema(
     {
         userId: {
             type: Schema.Types.ObjectId,
+            ref: 'User',
             required: true,
         },
         card: {
@@ -19,7 +20,7 @@ const TransactionSchema = new Schema(
             cardExpiredate: {
                 type: Date,
                 required: true,
-                default: () => new Date('01-01-2026'),
+                default: () => new Date('2026-01-01'),
             },
             cardCvc: {
                 type: Number,

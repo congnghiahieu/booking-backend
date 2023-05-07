@@ -3,21 +3,21 @@ const mongoose = require('mongoose');
 /**
  *
  * @param {string} fieldName
- * @param {Object} findField
+ * @param {mongoose.ObjectId} docId
  * @param {mongoose.Model} model
- * @param {boolean} isLean
+ * @param {boolean} lean
  * @returns {Promise<mongoose.Document | mongoose.LeanDocument>}
  */
-const findDoc = (fieldName, findField, model, lean = false) => {
+const findDoc = (fieldName, docId, model, lean = false) => {
     return async () => {
         let field;
         if (lean) {
-            // field = await model.find(findField).lean().exec();
-            field = await model.find(findField).lean().exec();
+            field = await model.findById(docId).lean().exec();
+        } else {
+            field = await model.findById(docId).exec();
         }
-        field = await model.find(findField).exec();
-        if (!field?.length) {
-            throw new Error(`Cannot find ${fieldName} with ${JSON.stringify(findField)} `);
+        if (!field) {
+            throw new Error(`Cannot find ${fieldName} with ${JSON.stringify(docId)} `);
         }
 
         return field;

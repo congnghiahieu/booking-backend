@@ -1,8 +1,8 @@
 const BOOK_STATUS = {
-    CANCELED: 'canceled',
-    PASSED: 'passed',
-    INPROCESS: 'inprocess',
-    ONOGING: 'ongoing',
+    CANCELED: 'Đã huỷ',
+    FINISHED: 'Hoàn tất',
+    INPROCESS: 'Đang diễn ra',
+    ONOGING: 'Sắp tới',
 };
 
 module.exports = {

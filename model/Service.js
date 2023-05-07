@@ -9,6 +9,7 @@ const ServiceSchema = new Schema(
     {
         hotelId: {
             type: Schema.Types.ObjectId,
+            ref: 'Hotel',
             required: true,
         },
         name: {
@@ -29,7 +30,7 @@ const ServiceSchema = new Schema(
         },
         discount: {
             type: Number,
-            default: () => getDiscount(),
+            default: () => getDiscount(20, 40),
         },
         point: {
             type: Number,

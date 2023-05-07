@@ -4,7 +4,7 @@
  * @returns {string} new string after remove unnecessary white spaces
  */
 const rmWs = str => {
-    if (str === null || str === undefined || str === '') return;
+    if (str === null || str === undefined || str === '') return '';
     return str.replace(/\s+/g, ' ').trim();
 };
 

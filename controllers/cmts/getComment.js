@@ -3,7 +3,6 @@ const HotelModel = require('../../model/Hotel');
 const CommentModel = require('../../model/Comment');
 const checkValidMongoId = require('../../utils/checkValidMongoId');
 const pagingFind = require('../../utils/pagingFind');
-const { default: mongoose } = require('mongoose');
 
 /*
   GET /v1/cmts?user_id
@@ -13,7 +12,7 @@ const { default: mongoose } = require('mongoose');
 */
 
 const getComments = async (req, res) => {
-    const { user_id: userId, hotel_id: hotelId, page, per_page } = req.query;
+    const { user_id: userId, hotel_id: hotelId, page, per_page, populate } = req.query;
 
     // Check only accept one params
     let paramsCount = 0;
@@ -60,23 +59,20 @@ const getComments = async (req, res) => {
             });
         }
 
-        // const cmtList = await CommentModel.find(curFindField).lean().exec();
-        let cmtList = await pagingFind(page, per_page, CommentModel, curFindField);
-        // console.log(cmtList instanceof mongoose.Document);
-        // cmtList = CommentModel.hydrate(cmtList);
-        // console.log(cmtList instanceof mongoose.Document);
-        console.log(cmtList);
+        let cmtList;
+        if (populate == 'true') {
+            cmtList = await CommentModel.find(curFindField)
+                .populate({
+                    path: 'hotelId',
+                    justOne: true,
+                    select: 'name slug imgs location stars cmtSum bookedCount point',
+                })
+                .lean()
+                .exec();
+        } else {
+            cmtList = await pagingFind(page, per_page, CommentModel, curFindField);
+        }
 
-        // let cmtList = await Promise.all([
-        //     CommentModel.count(curFindField),
-        //     CommentModel.find(curFindField).sort({ updatedAt: -1 }).populate({
-        //         path: 'userId',
-        //         select: ''
-        //     }).skip((page - 1) * per_page)
-        //     .limit(per_page),
-        // ]);
-
-        // console.log(cmtList);
         return res.status(200).json(cmtList);
     } catch (err) {
         console.log(err);

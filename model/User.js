@@ -7,6 +7,7 @@ const UserSchema = new Schema(
         username: {
             type: String,
             required: true,
+            unique: true,
         },
         password: {
             type: String,
@@ -18,13 +19,16 @@ const UserSchema = new Schema(
         name: {
             type: String,
             trim: true,
+            default: '',
         },
         contact: {
             phone: {
                 type: String,
+                default: '',
             },
             email: {
                 type: String,
+                default: '',
             },
         },
         address: {
@@ -56,12 +60,8 @@ const UserSchema = new Schema(
         //   type: Sccbf3hhema.Types.Boolean,
         //   default: false,
         // },
-        fav: {
-            type: Schema.Types.Array,
-        },
-        cart: {
-            type: Schema.Types.Array,
-        },
+        fav: [{ type: Schema.Types.ObjectId, ref: 'Hotel' }],
+        cart: [{ type: Schema.Types.ObjectId, ref: 'Service' }],
     },
     {
         timestamps: true,

@@ -14,8 +14,8 @@ const refreshNewToken = async (req, res) => {
     // Delete old cookies
     res.clearCookie('jwt', {
         httpOnly: true,
-        // sameSite: 'None',
-        // secure: true,
+        sameSite: 'None',
+        secure: true,
         maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -56,11 +56,11 @@ const refreshNewToken = async (req, res) => {
             {
                 'UserInfo': {
                     username: foundUser.username,
-                    name: foundUser.name || '',
+                    name: foundUser.name,
+                    email: foundUser.contact.email,
+                    address: foundUser.address,
                     id: foundUser.id,
                     roles: foundUser.roles,
-                    fav: foundUser.fav,
-                    cart: foundUser.cart,
                 },
             },
             process.env.ACCESS_TOKEN_SERECT,

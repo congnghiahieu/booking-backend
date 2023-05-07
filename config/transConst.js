@@ -1,6 +1,6 @@
 const TRANS_TYPES = {
-    BOOKING: 'booking',
-    TOP_UP: 'top_up',
+    BOOKING: 'Đặt phòng',
+    TOP_UP: 'Nạp tiền',
 };
 
 const TRANS_STATUS = {

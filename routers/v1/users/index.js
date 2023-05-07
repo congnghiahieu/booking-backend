@@ -16,19 +16,16 @@ router.post('/', userController.createUser);
 */
 router.put('/update_info', userController.updateUserInfoById);
 /*
-  PUT /v1/users/update_fav
-*/
-router.put('/update_fav', userController.updateUserFavInfoById);
-/*
-  PUT /v1/users/update_cart
-*/
-router.put('/update_cart/', userController.updateUserCartInfoById);
-
-/*
   DELETE /v1/users
 */
 router.delete('/', userController.deleteUserById);
-router.delete('/delete_cart', userController.deleteCart);
-router.delete('/delete_fav', userController.deleteFav);
+/*
+  /v1/users/fav
+*/
+router.use('/fav', require('./fav'));
+/*
+  /v1/users/cart
+*/
+router.use('/cart', require('./cart'));
 
 module.exports = router;

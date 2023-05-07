@@ -15,8 +15,8 @@ const logout = async (req, res) => {
         console.log('Logout: Not found user');
         res.clearCookie('jwt', {
             httpOnly: true,
-            // sameSite: 'None',
-            // secure: true,
+            sameSite: 'None',
+            secure: true,
             maxAge: 24 * 60 * 60 * 1000,
         });
         return res.sendStatus(204);
@@ -30,8 +30,8 @@ const logout = async (req, res) => {
     // Clear cookie ở client
     res.clearCookie('jwt', {
         httpOnly: true,
-        // sameSite: 'None',
-        // secure: true,
+        sameSite: 'None',
+        secure: true,
         maxAge: 24 * 60 * 60 * 1000,
     });
     res.sendStatus(204);

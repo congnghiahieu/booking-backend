@@ -25,20 +25,16 @@ const createComment = async (req, res) => {
 
     try {
         // Check user, hotel exist
-        let user, hotel;
-        await Promise.all([
-            findDoc('user', { _id: userId }, UserModel)(),
-            findDoc('hotel', { _id: hotelId }, HotelModel)(),
-        ]).then(([userArr, hotelArr]) => {
-            user = userArr[0];
-            hotel = hotelArr[0];
-        });
+        const [user, hotel] = await Promise.all([
+            findDoc('user', userId, UserModel, true)(),
+            findDoc('hotel', hotelId, HotelModel)(),
+        ]);
 
         // Create comment
         const newComment = await CommentModel.create({
             userId,
             user: {
-                name: user.name || user.username,
+                name: user.name,
                 nation: user.address?.nation || '',
             },
             hotelId,

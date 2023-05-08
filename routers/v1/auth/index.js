@@ -17,5 +17,9 @@ router.get('/logout', authController.logout);
   GET /v1/auth/refresh
 */
 router.get('/refresh', authController.refresh);
+/*
+  /v1/auth/google
+*/
+router.use('/google', require('./google'));
 
 module.exports = router;

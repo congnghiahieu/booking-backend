@@ -1,17 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { rmWs } = require('../utils/getSearchRegex');
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new Schema(
     {
         username: {
             type: String,
-            required: true,
-            unique: true,
+            // required: true,
+            // unique: true,
         },
         password: {
             type: String,
-            required: true,
+            // required: true,
+        },
+        googleId: {
+            type: String,
+        },
+        githubId: {
+            type: String,
         },
         sessionId: {
             type: String,
@@ -41,30 +48,54 @@ const UserSchema = new Schema(
                 trim: true,
             },
         },
-        roles: {
-            type: Array,
-            default: ['user'],
-        },
         // desc: {
         //   type: String,
         //   trim: true,
         // },
-        // avatarUrl: {
-        //   type: String,
-        // },
-        // isGoogle: {
-        //   type: Schema.Types.Boolean,
-        // },
+        avatarUrl: {
+            type: String,
+        },
+        roles: {
+            type: Array,
+            default: ['user'],
+        },
         refreshToken: [String],
-        // isGithub: {
-        //   type: Sccbf3hhema.Types.Boolean,
-        //   default: false,
-        // },
         fav: [{ type: Schema.Types.ObjectId, ref: 'Hotel' }],
         cart: [{ type: Schema.Types.ObjectId, ref: 'Service' }],
     },
     {
         timestamps: true,
+        methods: {
+            genAt() {
+                const accessToken = jwt.sign(
+                    {
+                        'UserInfo': {
+                            username: this.username,
+                            name: this.name,
+                            email: this.contact.email,
+                            address: this.address,
+                            id: this.id,
+                            roles: this.roles,
+                        },
+                    },
+                    process.env.ACCESS_TOKEN_SERECT,
+                    {
+                        expiresIn: '15m',
+                    },
+                );
+                return accessToken;
+            },
+            genRt() {
+                const newRefreshToken = jwt.sign(
+                    { username: this.username },
+                    process.env.REFRESH_TOKEN_SERECT,
+                    {
+                        expiresIn: '1d',
+                    },
+                );
+                return newRefreshToken;
+            },
+        },
     },
 );
 

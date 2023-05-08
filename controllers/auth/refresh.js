@@ -52,29 +52,8 @@ const refreshNewToken = async (req, res) => {
         if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
 
         // ReTo còn hạn
-        const newAccessToken = jwt.sign(
-            {
-                'UserInfo': {
-                    username: foundUser.username,
-                    name: foundUser.name,
-                    email: foundUser.contact.email,
-                    address: foundUser.address,
-                    id: foundUser.id,
-                    roles: foundUser.roles,
-                },
-            },
-            process.env.ACCESS_TOKEN_SERECT,
-            {
-                expiresIn: '30s',
-            },
-        );
-        const newRefreshToken = jwt.sign(
-            { username: foundUser.username },
-            process.env.REFRESH_TOKEN_SERECT,
-            {
-                expiresIn: '1d',
-            },
-        );
+        const newAccessToken = foundUser.genAt();
+        const newRefreshToken = foundUser.genRt();
         // Save refreshToken in DB
         foundUser.refreshToken = [...otherReTos, newRefreshToken];
         const result = await foundUser.save();

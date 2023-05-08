@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const UserModel = require('../../model/User');
 
 /*
@@ -26,30 +25,9 @@ const login = async (req, res) => {
         if (isRightPwd) {
             // Login thành công thì user được cấp 1 accessToken gửi về qua JSON, 1 refresh token gửi về qua httpOnly cookie
             // create access token
-            const newAccessToken = jwt.sign(
-                {
-                    'UserInfo': {
-                        username: foundUser.username,
-                        name: foundUser.name,
-                        email: foundUser.contact.email,
-                        address: foundUser.address,
-                        id: foundUser.id,
-                        roles: foundUser.roles,
-                    },
-                },
-                process.env.ACCESS_TOKEN_SERECT,
-                {
-                    expiresIn: '30s',
-                },
-            );
+            const newAccessToken = foundUser.genAt();
             // create refresh token
-            const newRefreshToken = jwt.sign(
-                { username: foundUser.username },
-                process.env.REFRESH_TOKEN_SERECT,
-                {
-                    expiresIn: '1d',
-                },
-            );
+            const newRefreshToken = foundUser.genRt();
 
             // Có thể xảy ra trường hợp user chưa logout nhưng đã có thể login (TH này phải xử lý ở phía client, nhưng ở server cũng phải đảm bảo xử lý TH này)
             const cookies = req?.cookies;

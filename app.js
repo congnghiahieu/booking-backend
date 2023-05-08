@@ -10,6 +10,7 @@ const connectDB = require('./config/connectDB');
 const credentials = require('./middlewares/credentials');
 const { logger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
+const passport = require('passport');
 
 // Conntect MongoDB
 connectDB();
@@ -38,7 +39,7 @@ app.use(helmet());
   Midleware này có tác dụng decode form data và lưu trong req.body
   Khi form được request thì lên server thì Content-type: application/x-www-form-urlencoded
 */
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 /*
   Đọc được dữ liệu dạng json truyền lên server
 */
@@ -47,6 +48,11 @@ app.use(express.json());
   Đọc được cookies được gửi từ clients
 */
 app.use(cookieParser());
+/*
+Passport
+*/
+app.use(passport.initialize());
+require('./services/auth/googleStrategy');
 /*
   Cho phép các file tĩnh luôn được server phát hiện ra
   Các file tĩnh trong thư mục public: các file ảnh sẽ được request tải từ client, ...

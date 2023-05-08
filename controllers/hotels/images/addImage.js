@@ -57,6 +57,7 @@ const addImagesByHotelId = async (req, res) => {
 
         const folderId = await checkFolderExists(hotel);
        
+        
        
         await Promise.all(Object.keys(files).map(key => {
             const absPath = path.join(

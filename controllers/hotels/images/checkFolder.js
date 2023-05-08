@@ -14,7 +14,6 @@ const driveService = new google.drive({
 })
 const checkFolderExists = async (hotel) => {
     const folderName = hotel.id;
-    console.log('Cchecking');
     console.log('\n');
     console.log(folderName);
     console.log('\n');

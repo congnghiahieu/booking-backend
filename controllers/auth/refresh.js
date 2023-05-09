@@ -57,7 +57,6 @@ const refreshNewToken = async (req, res) => {
         // Save refreshToken in DB
         foundUser.refreshToken = [...otherReTos, newRefreshToken];
         const result = await foundUser.save();
-        console.log(result);
         res.cookie('jwt', newRefreshToken, {
             httpOnly: true,
             sameSite: 'None',

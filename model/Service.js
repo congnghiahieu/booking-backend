@@ -22,7 +22,8 @@ const ServiceSchema = new Schema(
             slug: 'name',
             uniqueSlug: true,
         },
-        images: [String],
+        imgsGG: [String],
+        imgsRel: [String],
         prices: {
             type: Number,
             required: true,

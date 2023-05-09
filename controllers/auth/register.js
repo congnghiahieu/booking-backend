@@ -30,7 +30,6 @@ const registerNewUser = async (req, res) => {
             username: newUserName,
             password: hashedPwd,
         });
-        console.log(newUser);
         return res.status(201).json({
             message: `User ${newUserName} created successfully!`,
         });

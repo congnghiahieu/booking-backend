@@ -8,8 +8,7 @@ const { getSearchRegex } = require('../../utils/getSearchRegex');
 */
 
 const getHotels = async (req, res) => {
-    const { hotel_id: hotelId, page, per_page, city } = req.query;
-    console.log(req.query);
+    const { hotel_id: hotelId, page, per_page, city, name } = req.query;
 
     // Check for hotel id (query single hotel)
     if (hotelId) {
@@ -28,13 +27,19 @@ const getHotels = async (req, res) => {
             }
             return res.status(200).json(hotel);
         }
-        let findField = {};
-        if (city)
+        let findField;
+        if (city) {
             findField = {
                 'location.city': {
                     '$in': getSearchRegex(city),
                 },
             };
+        }
+        if (name) {
+            findField = {
+                'name': new RegExp(name, 'i'),
+            };
+        }
         const hotelList = await pagingFind(page, per_page, HotelModel, findField);
 
         return res.status(200).json(hotelList);

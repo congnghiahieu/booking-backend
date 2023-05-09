@@ -1,9 +1,5 @@
 const router = require('express').Router();
 const hotelController = require('../../../controllers/hotels');
-const fileUpload = require('express-fileupload')
-const filesPayloadExists = require('../../../middlewares/filesPayloadExists');
-const fileSizeLitmiter = require('../../../middlewares/fileSizeLimiter');
-const fileExtLimiter = require('../../../middlewares/fileExtLimiter');
 const verifyPagingParams = require('../../../middlewares/verifyPagingParams');
 
 /*
@@ -13,14 +9,7 @@ router.get('/', verifyPagingParams, hotelController.getHotels);
 /*
   POST /v1/hotel
 */
-router.post(
-    '/',
-    fileUpload({ createParentPath: true }),
-    filesPayloadExists,
-    fileExtLimiter(['.png', '.jpg', '.jpeg']),
-    fileSizeLitmiter,
-    hotelController.createHotel,
-);
+router.post('/', hotelController.createHotel);
 /*
   PUT /v1/hotel/update_info
 */

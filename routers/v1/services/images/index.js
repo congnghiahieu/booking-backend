@@ -6,14 +6,14 @@ const fileSizeLitmiter = require('../../../../middlewares/fileSizeLimiter');
 const fileExtLimiter = require('../../../../middlewares/fileExtLimiter');
 
 /*
-  GET /v1/services/images/:id
+  GET /v1/services/images?service_id=
 */
-router.get('/:id', serviceImgController.getImagesByServiceId);
+router.get('/', serviceImgController.getImagesByServiceId);
 /*
-  POST /v1/services/images/:id
+  POST /v1/services/images
 */
 router.post(
-    '/:id',
+    '/',
     fileUpload({ createParentPath: true }),
     filesPayloadExists,
     fileExtLimiter(['.png', '.jpg', '.jpeg']),
@@ -21,9 +21,8 @@ router.post(
     serviceImgController.addImagesByServiceId,
 );
 /*
-  DELETE /v1/services/images/:id?image_name=...
-  DELETE /v1/services/images/:id?image_name=all
+  DELETE /v1/services/images
 */
-router.delete('/:id', serviceImgController.deleteImagesByServiceId);
+router.delete('/', serviceImgController.deleteImagesByServiceId);
 
 module.exports = router;

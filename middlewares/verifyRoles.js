@@ -6,8 +6,6 @@ const verifyRoles = (...allowedRoles) => {
             return res.sendStatus(401);
         }
         // Authenticated
-        console.log('Allowed roles ', allowedRoles);
-        console.log('User roles ', req.roles);
         const isPermitted = req.roles.some(role => allowedRoles.includes(role));
         console.log(`Permission: ${isPermitted ? 'yes' : 'no'}`);
         // If not permitted, user have no right to access API resources - Forbidden

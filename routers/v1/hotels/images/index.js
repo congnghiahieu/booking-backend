@@ -6,14 +6,14 @@ const fileSizeLitmiter = require('../../../../middlewares/fileSizeLimiter');
 const fileExtLimiter = require('../../../../middlewares/fileExtLimiter');
 
 /*
-  GET /v1/hotels/images/:id
+  GET /v1/hotels/images?hotel_id=
 */
-router.get('/:id', hotelImgController.getImagesByHotelId);
+router.get('/', hotelImgController.getImagesByHotelId);
 /*
-  POST /v1/hotels/images/:id
+  POST /v1/hotels/images
 */
 router.post(
-    '/:id',
+    '/',
     fileUpload({ createParentPath: true }),
     filesPayloadExists,
     fileExtLimiter(['.png', '.jpg', '.jpeg']),
@@ -21,9 +21,8 @@ router.post(
     hotelImgController.addImagesByHotelId,
 );
 /*
-  DELETE /v1/hotels/images/:id?image_name=...
-  DELETE /v1/hotels/images/:id?image_name=all
+  DELETE /v1/hotels/images
 */
-router.delete('/:id', hotelImgController.deleteImagesByHotelId);
+router.delete('/', hotelImgController.deleteImagesByHotelId);
 
 module.exports = router;

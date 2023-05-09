@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const mongoose = require('mongoose');
 const passport = require('passport');
 
 router.get(
@@ -20,7 +19,6 @@ router.get(
         const newRefreshToken = req.user.genRt();
         req.user.refreshToken = [...req.user.refreshToken, newRefreshToken];
         const result = await req.user.save();
-        console.log(result);
         res.cookie('jwt', newRefreshToken, {
             httpOnly: true,
             sameSite: 'None',

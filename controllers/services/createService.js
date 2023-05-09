@@ -1,7 +1,7 @@
 const ServiceModel = require('../../model/Service');
 const HotelModel = require('../../model/Hotel');
 const checkValidMongoId = require('../../utils/checkValidMongoId');
-const path = require('path');
+const { getRan, getDiscount } = require('../../utils/random');
 
 /*
   POST /v1/services
@@ -12,6 +12,8 @@ const createService = async (req, res) => {
         hotelId,
         name,
         prices,
+        discount,
+        point,
         totalRooms,
         availableRooms = totalRooms,
         beds = 1,
@@ -50,10 +52,12 @@ const createService = async (req, res) => {
         }
 
         // Create hotel
-        const newService = new ServiceModel({
+        const newService = await ServiceModel.create({
             hotelId,
             name,
             prices,
+            discount: discount || getDiscount(20, 40),
+            point: point || getRan(8, 10, 1),
             totalRooms,
             availableRooms,
             info: {
@@ -62,33 +66,6 @@ const createService = async (req, res) => {
             },
         });
 
-        const files = req.files;
-        let imgsPath = [];
-        // Save img
-        Object.keys(files).forEach(key => {
-            const absPath = path.join(
-                __dirname,
-                '../',
-                '../',
-                'public',
-                'imgs',
-                `services`,
-                `${newService.id}`,
-                files[key].name,
-            );
-            files[key].mv(absPath, err => {
-                if (err) return res.status(500).json({ status: 'error', message: err });
-            });
-            const relPath = path.join(
-                'public',
-                'imgs',
-                `services`,
-                `${newService.id}`,
-                files[key].name,
-            );
-            imgsPath.push(relPath);
-        });
-        newService.images = imgsPath;
         // nếu tạo thành công 1 service, cập nhật thông tin cho hotel
         if (!hotel.cheapest || hotel.cheapest > newService.prices) {
             hotel.cheapest = newService.prices;

@@ -26,7 +26,6 @@ const logout = async (req, res) => {
     // Xoá refreshToken trong DB
     foundUser.refreshToken = foundUser.refreshToken.filter(rt => rt !== refreshToken);
     const result = await foundUser.save();
-    console.log(result);
     // Clear cookie ở client
     res.clearCookie('jwt', {
         httpOnly: true,

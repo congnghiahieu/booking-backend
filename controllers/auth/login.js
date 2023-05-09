@@ -63,7 +63,6 @@ const login = async (req, res) => {
             // Save refreshToken in DB
             foundUser.refreshToken = [...otherRetos, newRefreshToken];
             const result = await foundUser.save();
-            console.log(result);
             // Save refresh token in file (in database)
             res.cookie('jwt', newRefreshToken, {
                 httpOnly: true,

@@ -16,7 +16,6 @@ const verifyJWT = (req, res, next) => {
         }
         req.user = decoded.UserInfo.username;
         req.roles = decoded.UserInfo.roles;
-        console.log('Pass JWT');
         next();
     });
 };

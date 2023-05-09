@@ -35,21 +35,18 @@ const HotelSchema = new Schema(
             trim: true,
             required: true,
         },
-        imgs: [String],
+        imgsGG: [String],
+        imgsRel: [String],
         location: {
             nation: {
                 type: String,
                 trim: true,
                 default: 'Việt Nam',
             },
-            city: {
-                type: String,
-                trim: true,
-                default: 'Hà Nội',
-            },
             province: {
                 type: String,
                 trim: true,
+                default: 'Hà Nội',
             },
             district: {
                 type: String,
@@ -77,11 +74,9 @@ const HotelSchema = new Schema(
         },
         cheapest: {
             type: Number,
-            // default: 500000,
         },
         discountOfCheapest: {
             type: Number,
-            // default: () => getDiscount(),
         },
         point: {
             type: Number,

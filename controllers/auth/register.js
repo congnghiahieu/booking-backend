@@ -6,10 +6,10 @@ const UserModel = require('../../model/User');
 */
 const registerNewUser = async (req, res) => {
     // Check if lack of info
-    const { username: newUserName, password: pwd } = req?.body;
-    if (!newUserName || !pwd) {
+    const { username: newUserName, password: pwd, name, email } = req?.body;
+    if (!newUserName || !pwd || !name || !email) {
         return res.status(400).json({
-            message: `Bad request. Username and password are required`,
+            message: `Bad request. Username, password, name, email are required`,
         });
     }
     // Check if user already exists (case insensitive)
@@ -28,7 +28,11 @@ const registerNewUser = async (req, res) => {
         // Tạo user mới lưu vào database
         const newUser = await UserModel.create({
             username: newUserName,
+            name,
             password: hashedPwd,
+            contact: {
+                email: email,
+            },
         });
         return res.status(201).json({
             message: `User ${newUserName} created successfully!`,

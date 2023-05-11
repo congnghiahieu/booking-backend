@@ -70,11 +70,14 @@ const UserSchema = new Schema(
                 const accessToken = jwt.sign(
                     {
                         'UserInfo': {
+                            id: this.id,
+                            googleId: this.googleId,
                             username: this.username,
                             name: this.name,
                             email: this.contact.email,
+                            phone: this.contact.phone,
                             address: this.address,
-                            id: this.id,
+                            avatarUrl: this.avatarUrl,
                             roles: this.roles,
                         },
                     },

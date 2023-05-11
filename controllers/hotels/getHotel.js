@@ -7,6 +7,16 @@ const { getSearchRegex } = require('../../utils/getSearchRegex');
   GET /v1/hotels?hotel_id
 */
 
+const validQueryParam = params => {
+    return (
+        params !== undefined &&
+        params !== null &&
+        params !== 'undefined' &&
+        params !== 'null' &&
+        params !== ''
+    );
+};
+
 const getHotels = async (req, res) => {
     const { hotel_id: hotelId, page, per_page, province, name } = req.query;
 
@@ -28,14 +38,14 @@ const getHotels = async (req, res) => {
             return res.status(200).json(hotel);
         }
         let findField;
-        if (province) {
+        if (validQueryParam(province)) {
             findField = {
                 'location.province': {
                     '$in': getSearchRegex(province),
                 },
             };
         }
-        if (name) {
+        if (validQueryParam(name)) {
             findField = {
                 'name': new RegExp(name, 'i'),
             };

@@ -98,6 +98,8 @@ const HotelSchema = new Schema(
     },
 );
 
+HotelSchema.index({ name: 'text' });
+
 HotelSchema.pre('save', function () {
     this.location.nation = rmWs(this.location.nation);
     this.location.city = rmWs(this.location.city);

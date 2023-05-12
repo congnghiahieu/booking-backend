@@ -47,7 +47,7 @@ const getHotels = async (req, res) => {
         }
         if (validQueryParam(name)) {
             findField = {
-                'name': new RegExp(name, 'i'),
+                '$text': { '$search': name },
             };
         }
         const hotelList = await pagingFind(page, per_page, HotelModel, findField);

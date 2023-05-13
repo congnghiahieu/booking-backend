@@ -60,12 +60,12 @@ const getBooks = async (req, res) => {
         }
 
         let bookList;
-        if (populate == 'true') {
+        if (populate == 'true' || populate == true) {
             bookList = await BookModel.find(curFindField)
                 .populate({
                     path: 'hotelId',
                     justOne: true,
-                    select: 'name slug imgs location stars cmtSum bookedCount point',
+                    select: 'name slug imgsGG location stars cmtSum bookedCount point',
                 })
                 .populate({
                     path: 'serviceId',

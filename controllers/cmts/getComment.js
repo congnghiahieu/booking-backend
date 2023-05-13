@@ -60,12 +60,12 @@ const getComments = async (req, res) => {
         }
 
         let cmtList;
-        if (populate == 'true') {
+        if (populate == 'true' || populate == true) {
             cmtList = await CommentModel.find(curFindField)
                 .populate({
                     path: 'hotelId',
                     justOne: true,
-                    select: 'name slug imgs location stars cmtSum bookedCount point',
+                    select: 'name slug imgsGG location stars cmtSum bookedCount point',
                 })
                 .lean()
                 .exec();

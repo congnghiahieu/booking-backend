@@ -85,7 +85,7 @@ const createBook = async (req, res) => {
             hotelId,
             serviceId,
             isPaid: true,
-            status: BOOK_STATUS.ONOGING,
+            status: BOOK_STATUS.INCOMMING,
             period: {
                 start,
                 end,

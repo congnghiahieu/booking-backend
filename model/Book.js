@@ -40,7 +40,7 @@ const BookSchema = new Schema(
         },
         status: {
             type: String,
-            default: BOOK_STATUS.ONOGING,
+            default: BOOK_STATUS.INCOMMING,
         },
         isCanceled: {
             type: Boolean,

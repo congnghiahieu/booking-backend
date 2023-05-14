@@ -15,7 +15,7 @@ const { BOOK_STATUS } = require('../../config/bookConst');
 /* Tạo 1 book đồng thời cũng tạo 1 trans*/
 const createBook = async (req, res) => {
     // Book info
-    const { userId, cusInfo, hotelId, serviceId, start, end } = req.body;
+    const { userId, cusInfo, hotelId, serviceId, start, end, room } = req.body;
 
     // Check for data fullfil
     // Fullfil customer info
@@ -90,6 +90,7 @@ const createBook = async (req, res) => {
                 start,
                 end,
             },
+            room: room,
         });
 
         // Trans info

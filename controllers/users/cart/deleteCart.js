@@ -30,7 +30,6 @@ const deleteCart = async (req, res) => {
         user.cart = user.cart.filter(cartId => cartId != serviceId);
 
         const result = await user.save();
-        console.log(result);
 
         return res.status(200).json({
             message: `This cart item has been deleted successfully`,

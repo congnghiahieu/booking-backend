@@ -59,6 +59,11 @@ const BookSchema = new Schema(
                 default: '2100-12-31',
             },
         },
+        room: {
+            type: Number,
+            default: 1,
+            required: true,
+        },
         isPaid: {
             type: Boolean,
             default: false,

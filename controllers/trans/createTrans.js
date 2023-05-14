@@ -1,7 +1,7 @@
 const TransactionModel = require('../../model/Transaction');
 const UserModel = require('../../model/User');
 const { TRANS_STATUS, TRANS_TYPES } = require('../../config/transConst');
-const checkValidMongoId = require('../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../utils/checkValidMongoId');
 
 /*
   POST /v1/trans

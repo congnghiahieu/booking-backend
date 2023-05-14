@@ -1,6 +1,6 @@
 const UserModel = require('../../../model/User');
 const HotelModel = require('../../../model/Hotel');
-const checkValidMongoId = require('../../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../../utils/checkValidMongoId');
 const findDoc = require('../../../utils/findDoc');
 
 /*

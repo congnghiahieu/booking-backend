@@ -1,5 +1,5 @@
 const ServiceModel = require('../../../model/Service');
-const checkValidMongoId = require('../../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../../utils/checkValidMongoId');
 
 /*
     GET /v1/services/images?service_id=

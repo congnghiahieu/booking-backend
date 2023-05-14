@@ -1,5 +1,5 @@
 const UserModel = require('../../model/User');
-const checkValidMongoId = require('../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../utils/checkValidMongoId');
 const pagingFind = require('../../utils/pagingFind');
 
 /*

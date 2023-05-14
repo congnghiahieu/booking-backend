@@ -1,6 +1,6 @@
 const UserModel = require('../../model/User');
 const rolesList = Object.values(require('../../config/rolesList'));
-const checkValidMongoId = require('../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../utils/checkValidMongoId');
 
 /*
     PUT /v1/users/update_info

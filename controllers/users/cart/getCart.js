@@ -1,12 +1,12 @@
 const UserModel = require('../../../model/User');
-const checkValidMongoId = require('../../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../../utils/checkValidMongoId');
 
 /*
-    GET /v1/users/cart?user_id=
+    GET /v1/users/cart?user_id=&populate=true
 */
 
 const getCart = async (req, res) => {
-    const { user_id: userId } = req.query;
+    const { user_id: userId, populate } = req.query;
 
     // Check for data fullfil
     if (!userId) {
@@ -20,18 +20,25 @@ const getCart = async (req, res) => {
     if (!isValid) return res.status(errCode).json(errMsg);
 
     try {
-        const user = await UserModel.findById(userId)
-            .populate({
-                path: 'cart',
-                populate: { path: 'hotelId' },
-            })
-            .select('cart')
-            .lean()
-            .exec();
+        if (populate == 'true' || populate == true) {
+            const user = await UserModel.findById(userId)
+                .populate({
+                    path: 'cart',
+                    populate: { path: 'hotelId' },
+                })
+                .select('cart')
+                .lean()
+                .exec();
+            if (!user) {
+                return res.status(404).json({ message: `User with ID ${userId} not found` });
+            }
+            return res.status(200).json(user);
+        }
+
+        const user = await UserModel.findById(userId).select('cart').lean().exec();
         if (!user) {
             return res.status(404).json({ message: `User with ID ${userId} not found` });
         }
-
         return res.status(200).json(user);
     } catch (err) {
         console.log(err);

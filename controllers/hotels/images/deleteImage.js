@@ -1,7 +1,7 @@
 const HotelModel = require('../../../model/Hotel');
 const path = require('path');
 const fsPromises = require('fs').promises;
-const checkValidMongoId = require('../../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../../utils/checkValidMongoId');
 const {
     checkFolderExists,
     deleteSingleImage,
@@ -63,9 +63,11 @@ const deleteImagesByHotelId = async (req, res) => {
         // rmPath = path.join(rmPath, imageName);
         // await fsPromises.rm(rmPath, { force: true });
         await deleteSingleImage(imageId);
-        const index = hotel.imgsGG.indexOf(imageId);
-        hotel.imgsGG.splice(index, 1);
-        hotel.imgsRel.splice(index, 1);
+        const deletedIndex = hotel.imgsGG.indexOf(imageId);
+        if (deletedIndex !== -1) {
+            hotel.imgsGG = hotel.imgsGG.filter((v, i) => i !== deletedIndex);
+            hotel.imgsRel = hotel.imgsGG.filter((v, i) => i !== deletedIndex);
+        }
         const result = await hotel.save();
         console.log(result);
 

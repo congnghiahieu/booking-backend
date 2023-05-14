@@ -1,6 +1,6 @@
 const TransactionModel = require('../../model/Transaction');
 const UserModel = require('../../model/User');
-const checkValidMongoId = require('../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../utils/checkValidMongoId');
 
 /*
   DELETE /v1/trans?id

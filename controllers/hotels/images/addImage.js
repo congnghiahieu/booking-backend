@@ -1,6 +1,6 @@
 const HotelModel = require('../../../model/Hotel');
 const path = require('path');
-const checkValidMongoId = require('../../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../../utils/checkValidMongoId');
 const { checkFolderExists, uploadFile } = require('../../../services/drive');
 const { FOLDER_ID } = require('../../../config/driveApi');
 

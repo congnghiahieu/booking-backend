@@ -1,5 +1,5 @@
 const HotelModel = require('../../../model/Hotel');
-const checkValidMongoId = require('../../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../../utils/checkValidMongoId');
 /*
     GET /v1/hotels/images?hotel_id=
 */

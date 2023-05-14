@@ -1,7 +1,7 @@
 const UserModel = require('../../model/User');
 const HotelModel = require('../../model/Hotel');
 const BookModel = require('../../model/Book');
-const checkValidMongoId = require('../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../utils/checkValidMongoId');
 const pagingFind = require('../../utils/pagingFind');
 
 /*

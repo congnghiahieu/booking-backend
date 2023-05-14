@@ -1,7 +1,7 @@
 const CommentModel = require('../../model/Comment');
 const UserModel = require('../../model/User');
 const HotelModel = require('../../model/Hotel');
-const checkValidMongoId = require('../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../utils/checkValidMongoId');
 
 /*
   DELETE /v1/cmts?cmt_id

@@ -1,7 +1,7 @@
 const TransactionModel = require('../model/Transaction');
 const UserModel = require('../model/User');
 const { TRANS_STATUS, TRANS_TYPES } = require('../config/transConst');
-const checkValidMongoId = require('./checkValidMongoId');
+const { checkValidMongoId } = require('./checkValidMongoId');
 const createErr = require('./createErr');
 
 const makeTrans = async (

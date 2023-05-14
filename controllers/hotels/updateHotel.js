@@ -1,5 +1,5 @@
 const HotelModel = require('../../model/Hotel');
-const checkValidMongoId = require('../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../utils/checkValidMongoId');
 
 /*
     PUT /v1/hotels/update_info

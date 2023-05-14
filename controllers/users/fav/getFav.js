@@ -1,5 +1,5 @@
 const UserModel = require('../../../model/User');
-const checkValidMongoId = require('../../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../../utils/checkValidMongoId');
 
 /*
     GET /v1/users/fav?user_id=

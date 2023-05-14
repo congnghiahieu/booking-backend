@@ -1,5 +1,5 @@
 const BookModel = require('../../model/Book');
-const checkValidMongoId = require('../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../utils/checkValidMongoId');
 const { BOOK_STATUS } = require('../../config/bookConst');
 
 /*

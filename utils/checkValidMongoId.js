@@ -22,4 +22,19 @@ const checkValidMongoId = (...ids) => {
     return { isValid, errMsg, errCode };
 };
 
-module.exports = checkValidMongoId;
+const isFalsy = value => {
+    return (
+        value === undefined ||
+        value === null ||
+        value === 'undefined' ||
+        value === 'null' ||
+        value === '' ||
+        value === 0 ||
+        value === false
+    );
+};
+
+module.exports = {
+    checkValidMongoId,
+    isFalsy,
+};

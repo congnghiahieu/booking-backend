@@ -1,5 +1,5 @@
 const CommentModel = require('../../model/Comment');
-const checkValidMongoId = require('../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../utils/checkValidMongoId');
 
 /*
   PUT /v1/cmts/update_cmt

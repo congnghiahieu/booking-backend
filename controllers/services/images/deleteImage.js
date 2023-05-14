@@ -1,7 +1,7 @@
 const ServiceModel = require('../../../model/Service');
 const path = require('path');
 const fsPromises = require('fs').promises;
-const checkValidMongoId = require('../../../utils/checkValidMongoId');
+const { checkValidMongoId } = require('../../../utils/checkValidMongoId');
 const {
     checkFolderExists,
     deleteSingleImage,

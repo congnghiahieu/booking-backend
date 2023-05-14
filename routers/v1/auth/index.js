@@ -6,6 +6,10 @@ const authController = require('../../../controllers/auth');
 */
 router.post('/register', authController.register);
 /*
+  POST /v1/auth/reset
+*/
+router.post('/reset', authController.reset);
+/*
   POST /v1/auth/login
 */
 router.post('/login', authController.login);

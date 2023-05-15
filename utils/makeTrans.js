@@ -48,14 +48,14 @@ const makeTrans = async (
             status: status || TRANS_STATUS.SUCCESS,
         });
 
-        console.log(newTrans);
+        // console.log(newTrans);
 
         return {
             isError: false,
             transaction: newTrans,
         };
     } catch (catchedErr) {
-        console.log(catchedErr);
+        // console.log(catchedErr);
         return createErr(422, `User with ID ${userId} create transaction failed`);
     }
 };

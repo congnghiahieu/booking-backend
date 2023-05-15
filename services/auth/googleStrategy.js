@@ -14,7 +14,7 @@ passport.use(
             if (foundUser.length != 0) {
                 return done(null, foundUser[0]);
             }
-            console.log('This is a new user');
+            // console.log('This is a new user');
             const newUser = await UserModel.create({
                 googleId: profile.id,
                 name: `${profile.given_name} ${profile.family_name}`,

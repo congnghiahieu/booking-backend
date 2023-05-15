@@ -83,13 +83,13 @@ const addImagesByServiceId = async (req, res) => {
             service.imgsGG = [...service.imgsGG, ...ids];
         });
         const result = await service.save();
-        console.log(result);
+        // console.log(result);
 
         return res.status(201).json({
             message: `Add images for service ${service.name} with ID ${service.id} successfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Add images for service with ID ${serviceId} failed`,
             isError: true,

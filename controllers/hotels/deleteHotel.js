@@ -29,13 +29,13 @@ const deleteHotelById = async (req, res) => {
 
         const result = await hotel.deleteOne();
 
-        console.log(result);
+        // console.log(result);
 
         return res.status(200).json({
             message: `Hotel name ${result.name} with ID ${result._id} deleted`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Delete hotel with ID ${id} failed`,
             isError: true,

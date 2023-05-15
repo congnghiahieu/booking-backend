@@ -29,13 +29,13 @@ const deleteFav = async (req, res) => {
         user.fav = user.fav.filter(favId => favId != hotelId);
 
         const result = await user.save();
-        console.log(result);
+        // console.log(result);
 
         return res.status(200).json({
             message: `This fav item has been deleted successfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Delete Fav item of user with ID ${id} failed`,
             isError: true,

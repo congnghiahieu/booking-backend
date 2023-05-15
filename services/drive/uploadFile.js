@@ -19,7 +19,7 @@ const uploadFile = async (filePath, folderId) => {
         });
         return responseFile.data.id;
     } catch (error) {
-        console.log('Create folder failed ' + error);
+        // console.log('Create folder failed ' + error);
     }
 };
 

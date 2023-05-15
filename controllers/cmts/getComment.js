@@ -75,7 +75,7 @@ const getComments = async (req, res) => {
 
         return res.status(200).json(cmtList);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `. Cannot find ${userId ? 'user' : 'hotel'} with ID ${curId}`,
         });

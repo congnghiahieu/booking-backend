@@ -36,13 +36,13 @@ const addFav = async (req, res) => {
         user.fav.push(hotelId);
 
         const result = await user.save();
-        console.log(result);
+        // console.log(result);
 
         return res.status(201).json({
             message: `User ID ${result._id} add ${hotelId} to Fav sucessfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `User with ID ${id} add to Fav failed`,
             isError: true,

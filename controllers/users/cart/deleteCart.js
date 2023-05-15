@@ -35,7 +35,7 @@ const deleteCart = async (req, res) => {
             message: `This cart item has been deleted successfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Delete Cart item of user with id ${id} failed`,
             isError: true,

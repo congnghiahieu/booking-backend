@@ -67,14 +67,14 @@ const deleteTrans = async (req, res) => {
             .lean()
             .exec();
 
-        console.log(result);
+        // console.log(result);
 
         return res.status(200).json({
             message: `${result.deletedCount} transactions of user ${cur.username} ${cur._id} deleted successfully`,
             deleted: result.deletedCount,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
 
         const errMsg = `Delete ${
             userId ? `all transactions of user` : 'transaction'

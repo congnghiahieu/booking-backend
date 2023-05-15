@@ -55,12 +55,12 @@ const createBook = async (req, res) => {
             findDoc('service', serviceId, ServiceModel)(),
         ]);
 
-        // console.log(user instanceof mongoose.Document);
-        // console.log(user.constructor.name);
-        // console.log(hotel instanceof mongoose.Document);
-        // console.log(hotel.constructor.name);
-        // console.log(service instanceof mongoose.Document);
-        // console.log(service.constructor.name);
+        // // console.log(user instanceof mongoose.Document);
+        // // console.log(user.constructor.name);
+        // // console.log(hotel instanceof mongoose.Document);
+        // // console.log(hotel.constructor.name);
+        // // console.log(service instanceof mongoose.Document);
+        // // console.log(service.constructor.name);
 
         // Kiểm tra service xem còn phòng không
         if (service.availableRooms <= 0) {
@@ -125,7 +125,7 @@ const createBook = async (req, res) => {
             message: 'New book created sucessfully',
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         await transRes?.transaction?.deleteOne();
         return res.status(422).json({
             message: `Create book failed. ${err.message}`,

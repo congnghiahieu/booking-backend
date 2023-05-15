@@ -11,7 +11,7 @@ const { FOLDER_ID } = require('../../../config/driveApi');
 const addImagesByHotelId = async (req, res) => {
     // Payload already checked in previous middlewares
     const { hotelId } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     // Check for data fullfil
     if (!hotelId) {
@@ -78,13 +78,13 @@ const addImagesByHotelId = async (req, res) => {
             hotel.imgsGG = [...hotel.imgsGG, ...ids];
         });
         const result = await hotel.save();
-        console.log(result);
+        // console.log(result);
 
         return res.status(201).json({
             message: `Add images for hotel ${hotel.name} with ID ${hotel.id} successfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Add images for hotel with ID ${hotelId} failed`,
             isError: true,

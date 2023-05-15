@@ -78,7 +78,7 @@ const createService = async (req, res) => {
             message: `New service ${newService.name} of hotel ${hotel.name} created sucessfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Create service failed. ${err.message}`,
             isError: true,

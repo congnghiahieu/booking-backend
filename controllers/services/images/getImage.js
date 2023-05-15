@@ -29,7 +29,7 @@ const getImagesByServiceId = async (req, res) => {
 
         return res.status(200).json(service.imgsGG);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Get images from service with ID ${serviceId} failed`,
             isError: true,

@@ -87,7 +87,7 @@ const deleteBook = async (req, res) => {
         // If find by user id or hotel id
         result = await BookModel.deleteMany(curFindField).lean().exec();
 
-        console.log(result);
+        // console.log(result);
 
         const resMsg = `Delete ${
             userId
@@ -97,7 +97,7 @@ const deleteBook = async (req, res) => {
 
         return res.status(200).json({ message: resMsg, deleted: result.deletedCount });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `. Cannot find book with ${
                 bookId ? '' : userId ? 'user' : 'hotel'

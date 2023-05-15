@@ -38,7 +38,7 @@ const getTrans = async (req, res) => {
 
         return res.status(200).json(transList);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
 
         const errMsg = `Get all transactions ${!userId ? '' : `of user with ID ${userId}`} failed`;
 

@@ -35,13 +35,13 @@ const addCart = async (req, res) => {
         user.cart.push(serviceId);
 
         const result = await user.save();
-        console.log(result);
+        // console.log(result);
 
         return res.status(201).json({
             message: `User ID ${result._id} add to Cart sucessfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `User with ID ${id} add to Cart failed`,
             isError: true,

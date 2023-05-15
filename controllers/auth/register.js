@@ -38,7 +38,7 @@ const registerNewUser = async (req, res) => {
             message: `User ${newUserName} created successfully!`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `. Failed to create new user! Error: ${err.message}`,
         });

@@ -40,13 +40,13 @@ const updateUserInfoById = async (req, res) => {
 
         const result = await user.save();
 
-        console.log(result);
+        // console.log(result);
 
         return res.status(201).json({
             message: `User ID ${result._id} updated sucessfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `. Update user info with ID ${id} failed`,
             isError: true,

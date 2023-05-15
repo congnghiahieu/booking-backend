@@ -12,7 +12,7 @@ const logout = async (req, res) => {
     const foundUser = await UserModel.findOne({ refreshToken }).exec();
 
     if (!foundUser) {
-        console.log('Logout: Not found user');
+        // console.log('Logout: Not found user');
         res.clearCookie('jwt', {
             httpOnly: true,
             sameSite: 'None',
@@ -22,7 +22,7 @@ const logout = async (req, res) => {
         return res.sendStatus(204);
     }
 
-    console.log('Logout: clear JWT');
+    // console.log('Logout: clear JWT');
     // Xoá refreshToken trong DB
     foundUser.refreshToken = foundUser.refreshToken.filter(rt => rt !== refreshToken);
     const result = await foundUser.save();

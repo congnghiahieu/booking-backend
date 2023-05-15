@@ -41,13 +41,13 @@ const updateBookInfoById = async (req, res) => {
 
         const result = await book.save();
 
-        console.log(result);
+        // console.log(result);
 
         return res.status(201).json({
             message: `Book ID ${book.id} updated sucessfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Update book with ID ${id} failed`,
             isError: true,

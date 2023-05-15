@@ -65,14 +65,14 @@ const deleteServices = async (req, res) => {
             .lean()
             .exec();
 
-        console.log(result);
+        // console.log(result);
 
         return res.status(200).json({
             message: `All service of hotel ${cur.name} ${cur._id} deleted successfully`,
             deleted: result.deletedCount,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
 
         const errMsg = `Delete ${
             hotelId ? `all services of hotel` : 'service'

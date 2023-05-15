@@ -50,7 +50,7 @@ const createComment = async (req, res) => {
             message: 'New comment created sucessfully',
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Create comment from user with ID ${userId} for hotel with ID ${hotelId} failed. ${err.message}`,
             isError: true,

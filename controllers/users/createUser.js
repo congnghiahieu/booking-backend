@@ -55,13 +55,13 @@ const createUser = async (req, res) => {
 
         const result = await newUser.save();
 
-        console.log(result);
+        // console.log(result);
 
         return res.status(201).json({
             message: `User ${username} created successfully!`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Create new user failed`,
             isError: true,

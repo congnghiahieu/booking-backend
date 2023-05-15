@@ -41,7 +41,7 @@ const getCart = async (req, res) => {
         }
         return res.status(200).json(user);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Get Cart item of user with ID ${userId} failed`,
             isError: true,

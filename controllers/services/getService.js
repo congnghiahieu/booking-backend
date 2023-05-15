@@ -66,7 +66,7 @@ const getServices = async (req, res) => {
         const serviceList = await pagingFind(page, per_page, ServiceModel, { hotelId: hotelId });
         return res.status(200).json(serviceList);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
 
         const errMsg = `Get ${id ? 'service' : 'services'} ${hotelId ? 'of hotel' : ''} ${
             curId ? `with ID ${curId}` : ''

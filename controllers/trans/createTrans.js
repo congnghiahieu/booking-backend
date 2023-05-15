@@ -39,13 +39,13 @@ const createTrans = async (req, res) => {
             status: status || TRANS_STATUS.SUCCESS,
         });
 
-        console.log(newTrans);
+        // console.log(newTrans);
 
         return res.status(201).json({
             message: 'New transaction created sucessfully',
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `User with ID ${userId} create transaction failed`,
             isError: true,

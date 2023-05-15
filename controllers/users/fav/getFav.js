@@ -27,7 +27,7 @@ const getFav = async (req, res) => {
 
         return res.status(200).json(user);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Get Fav item of user with ID ${userId} failed`,
             isError: true,

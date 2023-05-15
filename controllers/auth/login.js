@@ -31,7 +31,7 @@ const login = async (req, res) => {
 
             // Có thể xảy ra trường hợp user chưa logout nhưng đã có thể login (TH này phải xử lý ở phía client, nhưng ở server cũng phải đảm bảo xử lý TH này)
             const cookies = req?.cookies;
-            console.log(`cookie available at login: ${JSON.stringify(cookies)}`);
+            // console.log(`cookie available at login: ${JSON.stringify(cookies)}`);
             let otherRetos = !cookies?.jwt
                 ? foundUser.refreshToken
                 : foundUser.refreshToken.filter(rt => rt !== cookies.jwt);
@@ -48,7 +48,7 @@ const login = async (req, res) => {
                 const user = await UserModel.findOne({ refreshToken: oldReTo }).exec();
                 // Không tìm thấy user tương ứng với oldReto bởi vì ReTo đã được sử dụng bởi hacker
                 if (!user) {
-                    console.log('Attemped to refresh token reuse at login');
+                    // console.log('Attemped to refresh token reuse at login');
                     // Clear các ReTo còn lại và bắt các thiết bị khác đăng nhập lại
                     otherRetos = [];
                 }
@@ -81,7 +81,7 @@ const login = async (req, res) => {
             });
         }
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Login failed! Error: ${err.message}`,
         });

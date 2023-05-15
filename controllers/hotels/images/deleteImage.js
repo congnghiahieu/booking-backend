@@ -69,13 +69,13 @@ const deleteImagesByHotelId = async (req, res) => {
             hotel.imgsRel = hotel.imgsGG.filter((v, i) => i !== deletedIndex);
         }
         const result = await hotel.save();
-        console.log(result);
+        // console.log(result);
 
         return res.status(200).json({
             message: `Delete image ${imageId} of hotel ${hotel.name} with ID ${hotel.id} successfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Delete image for hotel with ID ${hotelId} failed`,
             isError: true,

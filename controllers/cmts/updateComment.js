@@ -34,13 +34,13 @@ const updateCmtById = async (req, res) => {
 
         const result = await cmt.save();
 
-        console.log(result);
+        // console.log(result);
 
         return res.status(201).json({
             message: `Comment ID ${result._id} updated sucessfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Update comment with ${id} failed`,
             isError: true,

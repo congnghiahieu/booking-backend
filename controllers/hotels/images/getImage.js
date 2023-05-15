@@ -28,7 +28,7 @@ const getImagesByHotelId = async (req, res) => {
 
         return res.status(200).json(hotel.imgsGG);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Get images from hotel with ID ${hotelId} failed`,
             isError: true,

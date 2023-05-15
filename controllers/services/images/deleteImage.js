@@ -53,7 +53,7 @@ const deleteImagesByServiceId = async (req, res) => {
             service.imgsGG = [];
             service.imgsRel = [];
             const result = await service.save();
-            console.log(result);
+            // console.log(result);
             return res.status(200).json({
                 message: `Delete all images of service ${service.name} with ID ${service.id} successfully`,
             });
@@ -68,13 +68,13 @@ const deleteImagesByServiceId = async (req, res) => {
         service.imgsGG.splice(index, 1);
         service.imgsRel.splice(index, 1);
         const result = await service.save();
-        console.log(result);
+        // console.log(result);
 
         return res.status(200).json({
             message: `Delete image ${imageId} of service ${service.name} with ID ${service.id} successfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Delete image for service with ID ${serviceId} failed`,
             isError: true,

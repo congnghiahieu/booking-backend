@@ -60,13 +60,13 @@ const updateHotelInfoById = async (req, res) => {
 
         const result = await hotel.save();
 
-        console.log(result);
+        // console.log(result);
 
         return res.status(201).json({
             message: `Hotel ID ${hotel._id} updated sucessfully`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Update hotel with ID ${id} failed`,
             isError: true,

@@ -85,7 +85,7 @@ const updateServiceInfoById = async (req, res) => {
             message: resMsg,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Update service with ID ${id} failed`,
             isError: true,

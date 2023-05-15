@@ -44,7 +44,7 @@ const getHotels = async (req, res) => {
 
         return res.status(200).json(hotelList);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Get ${hotelId ? `hotel with ID ${hotelId}` : 'all hotels'} failed`,
             isError: true,

@@ -27,11 +27,11 @@ const refreshNewToken = async (req, res) => {
         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SERECT, async (err, decoded) => {
             if (err) return res.sendStatus(403); // ReTo Fake hoặc hết hạn
             // Nếu ReTo còn hạn thì đã bị hack
-            console.log('Refresh Token reuse detected: Hacked user');
+            // console.log('Refresh Token reuse detected: Hacked user');
             const hackedUser = await UserModel.findOne({ username: decoded.username }).exec();
             hackedUser.refreshToken = [];
             const result = hackedUser.save();
-            console.log(result);
+            // console.log(result);
         });
         return res.sendStatus(403);
     }
@@ -44,10 +44,10 @@ const refreshNewToken = async (req, res) => {
         // foundUser.username !== decoded.username. Kiểm tra xem liệu B có lấy refreshToken của A để request hay không
         if (err) {
             // Xoá ReTo cũ khỏi database
-            console.log('expired refresh token');
+            // console.log('expired refresh token');
             foundUser.refreshToken = [...otherReTos];
             const result = await foundUser.save();
-            console.log(result);
+            // console.log(result);
         }
         if (err || foundUser.username !== decoded.username) return res.sendStatus(403);
 

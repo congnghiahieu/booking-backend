@@ -29,13 +29,13 @@ const deleteUserById = async (req, res) => {
 
         const result = await user.deleteOne();
 
-        console.log(result);
+        // console.log(result);
 
         return res.status(200).json({
             message: `User name ${result.username} with ID ${result._id} deleted`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Delete user by id ${id} failed`,
             isError: true,

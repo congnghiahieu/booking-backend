@@ -33,7 +33,7 @@ const reset = async (req, res) => {
             message: `User with ID ${userId} change password successfully!`,
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `. Failed to change password new user! Error: ${err.message}`,
         });

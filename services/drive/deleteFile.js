@@ -4,7 +4,7 @@ const deleteSingleImage = async fileId => {
     try {
         await driveService.files.delete({ fileId });
     } catch (error) {
-        console.log(`Delete file with ID ${fileId} failed ` + error);
+        // console.log(`Delete file with ID ${fileId} failed ` + error);
     }
 };
 
@@ -22,9 +22,9 @@ const deleteAllImages = async folderId => {
                 return driveService.files.delete({ fileId: file.id });
             }),
         );
-        console.log('All deleted successfully');
+        // console.log('All deleted successfully');
     } catch (error) {
-        console.log('Delete all files failed ' + error);
+        // console.log('Delete all files failed ' + error);
     }
 };
 

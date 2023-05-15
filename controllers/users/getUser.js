@@ -31,7 +31,7 @@ const getUsers = async (req, res) => {
 
         return res.status(200).json(userList);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: `Get ${userId ? `user with ID ${userId}` : 'all users'} failed`,
             isError: true,

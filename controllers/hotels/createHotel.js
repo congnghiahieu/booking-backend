@@ -55,13 +55,13 @@ const createHotel = async (req, res) => {
             point: point,
         });
 
-        console.log(newHotel);
+        // console.log(newHotel);
 
         return res.status(201).json({
             message: 'New hotel created sucessfully',
         });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         return res.status(422).json({
             message: 'Create hotel failed',
             isError: true,

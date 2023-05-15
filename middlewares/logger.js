@@ -16,13 +16,13 @@ const saveLog = async (message, fileName) => {
 
         await fsPromises.appendFile(path.join(__dirname, '..', 'logs', fileName), logItem);
     } catch (err) {
-        console.log(err);
+        // console.log(err);
     }
 };
 
 const logger = (req, res, next) => {
     saveLog(`${req.method}\t${req.headers.origin}\t${req.url}`, 'req-logs.txt');
-    console.log(`${req.method} ${req.path}`);
+    // console.log(`${req.method} ${req.path}`);
     next();
 };
 
